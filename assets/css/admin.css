@@ -1,0 +1,38 @@
+.drop-zone {
+    border: 2px dashed #7270ec;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    color: white;
+    background: #4e4b50;
+    margin-bottom: 10px;
+  }
+  
+  .drop-zone.dragover {
+    background-color: #5553b0;
+  }
+  
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .product {
+    background: #2c0d4b;
+    padding: 15px;
+    border-radius: 10px;
+    width: 220px;
+    text-align: center;
+  }
+  
+  .product img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  .product h3, .product p {
+    color: white;
+  }
+  
