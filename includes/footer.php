@@ -12,7 +12,7 @@
       <h4>Síguenos</h4>
       <ul>
         <li><a href="#" target="_blank"><img src="<?= BASE_URL ?>/assets/images/facebook.png" alt="Facebook"></a></li>
-        <li><a href="#" target="_blank"><img src="<?= BASE_URL ?>/assets/images/twitter.png" alt="Twitter"></a></li>
+        <li><a href="#" target="_blank"><img src="<?= BASE_URL ?>/assets/images/X.png" alt="X"></a></li>
         <li><a href="#" target="_blank"><img src="<?= BASE_URL ?>/assets/images/instagram.png" alt="Instagram"></a></li>
       </ul>
     </div>
@@ -27,11 +27,10 @@
 <script src="<?= BASE_URL ?>/assets/js/script.js"></script>
 <script src="<?= BASE_URL ?>/assets/js/validaciones.js"></script>
 <?php
-    // Cargar dragdrop.js solo en páginas de admin que lo necesiten
-    $current_page_admin = basename($_SERVER['PHP_SELF']);
-    if (isset($_SESSION['es_admin']) && $_SESSION['es_admin'] === true && ($current_page_admin === 'productos.php' || $current_page_admin === 'editar.php')) {
-        echo '<script src="' . BASE_URL . '/assets/js/dragdrop.js"></script>';
-    }
+     $current_page_admin = basename($_SERVER['PHP_SELF']);
+     if (isset($_SESSION['es_admin']) && $_SESSION['es_admin'] === true && ($current_page_admin === 'productos.php' || $current_page_admin === 'editar.php')) {
+         echo '<script src="' . BASE_URL . '/assets/js/dragdrop.js"></script>';
+     }
 ?>
 </body>
 </html>

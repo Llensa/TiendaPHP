@@ -315,16 +315,18 @@ hr.separator-line {
     display: inline-block;
     padding: 10px 20px;
     font-size: 0.95em;
-    color: aliceblue;
-    border: 2px solid #a972ff;
-    border-radius: 25px; /* Botones redondeados como en el ejemplo */
+    color: #e0e0e0;
+    border: 2px solid #6b45b3; /* Un violeta más oscuro */
+    background-color: transparent;
+    border-radius: 25px;
     font-weight: 500;
     transition: background-color 0.3s ease, color 0.3s ease;
     text-align: center;
 }
+
 .btn-3:hover {
-    background-color: #a972ff;
-    color: #1e0a37; /* Texto oscuro en hover */
+    background-color: #6b45b3; /* Misma tonalidad */
+    color: #ffffff;
 }
 
 
@@ -529,4 +531,12 @@ hr.separator-line {
         transform: translateX(-50%);
         right: auto; /* Sobreescribir right:0 */
     }
+}
+.header-top {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    background-color: #2a0f4a;
+    padding: 10px 0;
 }
