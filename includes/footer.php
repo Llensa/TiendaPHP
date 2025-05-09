@@ -1,25 +1,37 @@
-<footer>
-  <div class="footer-content container">
+<footer class="footer-section"> <div class="footer-content container">
     <div class="footer-links">
+      <h4>Enlaces Rápidos</h4>
       <ul>
+        <li><a href="<?= BASE_URL ?>/index.php">Inicio</a></li>
         <li><a href="#">Política de privacidad</a></li>
         <li><a href="#">Términos y condiciones</a></li>
+        <li><a href="#">Sobre Nosotros</a></li>
       </ul>
     </div>
     <div class="footer-social">
+      <h4>Síguenos</h4>
       <ul>
-        <li><a href="#"><img src="<?= BASE_URL ?>/assets/images/facebook.png" alt="Facebook"></a></li>
-        <li><a href="#"><img src="<?= BASE_URL ?>/assets/images/twitter.png" alt="Twitter"></a></li>
-        <li><a href="#"><img src="<?= BASE_URL ?>/assets/images/instagram.png" alt="Instagram"></a></li>
+        <li><a href="#" target="_blank"><img src="<?= BASE_URL ?>/assets/images/facebook.png" alt="Facebook"></a></li>
+        <li><a href="#" target="_blank"><img src="<?= BASE_URL ?>/assets/images/twitter.png" alt="Twitter"></a></li>
+        <li><a href="#" target="_blank"><img src="<?= BASE_URL ?>/assets/images/instagram.png" alt="Instagram"></a></li>
       </ul>
+    </div>
+    <div class="footer-info">
+        <h4>&copy; <?= date('Y') ?> Tu Tienda de Auriculares</h4>
+        <p>Todos los derechos reservados.</p>
     </div>
   </div>
 </footer>
 
-<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="<?= BASE_URL ?>/assets/js/script.js"></script>
 <script src="<?= BASE_URL ?>/assets/js/validaciones.js"></script>
+<?php
+    // Cargar dragdrop.js solo en páginas de admin que lo necesiten
+    $current_page_admin = basename($_SERVER['PHP_SELF']);
+    if (isset($_SESSION['es_admin']) && $_SESSION['es_admin'] === true && ($current_page_admin === 'productos.php' || $current_page_admin === 'editar.php')) {
+        echo '<script src="' . BASE_URL . '/assets/js/dragdrop.js"></script>';
+    }
+?>
 </body>
 </html>
