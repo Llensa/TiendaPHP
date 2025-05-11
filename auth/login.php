@@ -1,9 +1,9 @@
 <?php
 require_once '../db/db.php';
-include '../includes/header.php'; // header.php llama a session_start()
+include '../includes/header.php';
 
 $errores = [];
-$redirect_url = BASE_URL . '/perfil.php'; // Redirección por defecto
+$redirect_url = BASE_URL . '/perfil.php';
 
 if (isset($_GET['redirect'])) {
     $decoded_redirect = urldecode($_GET['redirect']);
@@ -15,6 +15,7 @@ if (isset($_GET['redirect'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];
+    $email_form = $email; // Para repoblar el campo
 
     if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errores[] = "Por favor, introduce un correo electrónico válido.";
@@ -24,18 +25,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errores)) {
-        $stmt = $pdo->prepare("SELECT id, password FROM usuarios WHERE email = ?");
+        // Incluir 'rol' y 'nombre' en la consulta
+        $stmt = $pdo->prepare("SELECT id, nombre, password, rol, verificado FROM usuarios WHERE email = ?");
         $stmt->execute([$email]);
         $usuario = $stmt->fetch();
 
-        if ($usuario && password_verify($password, $usuario['password'])) {
-            $_SESSION['usuario'] = $usuario['id'];
-
-            // Administrador por email (solo para pruebas)
-            $_SESSION['es_admin'] = ($email === 'admin@example.com');
-
-            header('Location: ' . $redirect_url);
-            exit;
+        if ($usuario) {
+            if ($usuario['verificado'] == 1) {
+                if (password_verify($password, $usuario['password'])) {
+                    $_SESSION['usuario'] = $usuario['id'];
+                    $_SESSION['nombre_usuario'] = $usuario['nombre']; // Guardar nombre para saludos
+                    $_SESSION['es_admin'] = ($usuario['rol'] === 'admin'); // Establecer si es admin
+                    
+                    header('Location: ' . $redirect_url);
+                    exit;
+                } else {
+                    $errores[] = "Correo electrónico o contraseña incorrectos.";
+                }
+            } else {
+                $errores[] = "Tu cuenta aún no ha sido verificada. Por favor, revisá tu correo electrónico.";
+            }
         } else {
             $errores[] = "Correo electrónico o contraseña incorrectos.";
         }
@@ -44,8 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <main class="container">
-  <div class="form-autenticacion card-login">
-    <h2>Iniciar Sesión</h2>
+  <div class="form-autenticacion card-login" id="formLoginContainer"> <h2>Iniciar Sesión</h2>
 
     <?php if (!empty($errores)): ?>
       <div class="errores-formulario">
@@ -55,14 +63,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
     <?php endif; ?>
 
-    <form method="POST" action="<?= BASE_URL ?>/auth/login.php<?= isset($_GET['redirect']) ? '?redirect=' . urlencode($_GET['redirect']) : '' ?>">
-      <div class="form-grupo">
-        <label for="email">Correo electrónico</label>
-        <input type="email" id="email" name="email" placeholder="tu@correo.com" required class="form-control" value="<?= isset($email) ? htmlspecialchars($email) : '' ?>">
+    <form method="POST" action="<?= BASE_URL ?>/auth/login.php<?= isset($_GET['redirect']) ? '?redirect=' . urlencode($_GET['redirect']) : '' ?>" id="formLogin"> <div class="form-grupo">
+        <label for="emailLogin">Correo electrónico</label>
+        <input type="email" id="emailLogin" name="email" placeholder="tu@correo.com" required class="form-control" value="<?= htmlspecialchars($email_form ?? '') ?>">
+        <span class="error-js-mensaje" id="error-emailLogin"></span>
       </div>
       <div class="form-grupo">
-        <label for="password">Contraseña</label>
-        <input type="password" id="password" name="password" placeholder="Tu contraseña" required class="form-control">
+        <label for="passwordLogin">Contraseña</label>
+        <input type="password" id="passwordLogin" name="password" placeholder="Tu contraseña" required class="form-control">
+        <span class="error-js-mensaje" id="error-passwordLogin"></span>
       </div>
       <button type="submit" class="btn-3">Entrar</button>
       <p>¿No tienes cuenta? <a href="<?= BASE_URL ?>/auth/register.php">Regístrate aquí</a></p>

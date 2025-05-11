@@ -2,24 +2,43 @@
 require_once 'db/db.php';
 include 'includes/header.php';
 
-// Verifica si el usuario está logueado
 if (!isset($_SESSION['usuario'])) {
-    header('Location: auth/login.php');
+    header('Location: ' . BASE_URL . '/auth/login.php?redirect=' . urlencode(BASE_URL . '/perfil.php'));
     exit;
 }
 
-// Carga los datos del usuario desde la base
-$stmt = $pdo->prepare("SELECT nombre, email FROM usuarios WHERE id = ?");
+$stmt = $pdo->prepare("SELECT nombre, email, fecha_registro FROM usuarios WHERE id = ?");
 $stmt->execute([$_SESSION['usuario']]);
 $usuario = $stmt->fetch();
+
+// Guardar nombre de usuario en sesión para saludo en admin/index.php si es admin
+if ($usuario) {
+    $_SESSION['nombre_usuario'] = $usuario['nombre'];
+}
 ?>
 
 <main class="container">
-  <h2>Mi Perfil</h2>
-  <p><strong>Nombre:</strong> <?= htmlspecialchars($usuario['nombre']) ?></p>
-  <p><strong>Email:</strong> <?= htmlspecialchars($usuario['email']) ?></p>
-  <p><a href="auth/logout.php" class="btn-3">Cerrar Sesión</a></p>
+    <div class="perfil-card">
+        <div class="perfil-header">
+            <img src="<?= BASE_URL ?>/assets/images/avatar.png" alt="Avatar Usuario" class="avatar-perfil">
+            <h2><?= htmlspecialchars($usuario['nombre']) ?></h2>
+            <p><?= htmlspecialchars($usuario['email']) ?></p>
+            <?php if (!empty($usuario['fecha_registro'])): ?>
+                <small>Miembro desde: <?= date('d/m/Y', strtotime($usuario['fecha_registro'])) ?></small>
+            <?php endif; ?>
+        </div>
+
+        <div class="perfil-account-links">
+            <h3>Mi Cuenta</h3>
+            <ul>
+                <li><a href="<?= BASE_URL ?>/pedidos.php">Mis Pedidos</a></li>
+                <li><a href="<?= BASE_URL ?>/lista_deseos.php">Mi Lista de Deseos</a></li>
+                <li><a href="<?= BASE_URL ?>/direcciones.php">Mis Direcciones</a></li>
+                <li><a href="<?= BASE_URL ?>/detalles_cuenta.php">Detalles de la Cuenta</a></li>
+                <li><a href="<?= BASE_URL ?>/auth/logout.php" class="btn-3 btn-logout">Cerrar Sesión</a></li>
+            </ul>
+        </div>
+    </div>
 </main>
 
 <?php include 'includes/footer.php'; ?>
-

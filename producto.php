@@ -2,6 +2,7 @@
 require_once 'db/db.php';
 include 'includes/header.php';
 
+// ... (código existente para cargar producto sin cambios) ...
 if (!isset($_GET['id'])) {
     echo "<p class='container'>Producto no especificado.</p>";
     include 'includes/footer.php';
@@ -24,6 +25,7 @@ if (!$producto) {
     include 'includes/footer.php';
     exit;
 }
+
 ?>
 
 <main class="container">
@@ -33,8 +35,7 @@ if (!$producto) {
         <img src="<?= BASE_URL ?>/assets/images/<?= htmlspecialchars($producto['imagen']) ?>" alt="<?= htmlspecialchars($producto['nombre']) ?>" class="product-detail-image">
     </div>
     <div class="product-txt product-detail-info">
-      <p><?= htmlspecialchars($producto['descripcion']) ?></p>
-      <p class="precio">$<?= number_format($producto['precio'], 2, ',', '.') ?></p>
+      <p><?= nl2br(htmlspecialchars($producto['descripcion'])) ?></p> <p class="precio">$<?= number_format($producto['precio'], 2, ',', '.') ?></p>
       <button class="btn-3 agregar-carrito"
           data-id="<?= $producto['id'] ?>"
           data-nombre="<?= htmlspecialchars($producto['nombre']) ?>"
@@ -42,14 +43,14 @@ if (!$producto) {
           data-imagen="<?= BASE_URL ?>/assets/images/<?= htmlspecialchars($producto['imagen']) ?>">
           Agregar al carrito
       </button>
-      <a href="<?= BASE_URL ?>/index.php" class="btn-3" style="margin-top:10px; display:inline-block;">Volver al inicio</a>
+      <a href="<?= BASE_URL ?>/index.php" class="btn-3 btn-volver" style="margin-top:10px; display:inline-block;">Volver al inicio</a>
     </div>
   </div>
 </main>
 
 <?php
 $stmt_comentarios = $pdo->prepare("
-    SELECT c.contenido, c.creado_en, u.nombre AS nombre_usuario
+    SELECT c.id AS comentario_id, c.contenido, c.creado_en, c.editado_en, c.usuario_id, u.nombre AS nombre_usuario
     FROM comentarios c
     JOIN usuarios u ON c.usuario_id = u.id
     WHERE c.producto_id = ?
@@ -75,18 +76,35 @@ $comentarios = $stmt_comentarios->fetchAll();
     <p>Aún no hay comentarios para este producto. ¡Sé el primero!</p>
   <?php else: ?>
     <?php foreach ($comentarios as $com): ?>
-      <div class="comentario-item">
-        <strong><?= htmlspecialchars($com['nombre_usuario']) ?></strong>
-        <small><?= date("d/m/Y H:i", strtotime($com['creado_en'])) ?></small>
+      <div class="comentario-item" id="comentario-<?= $com['comentario_id'] ?>">
+        <div class="comentario-autor-fecha">
+            <strong><?= htmlspecialchars($com['nombre_usuario']) ?></strong>
+            <small>
+                <?= date("d/m/Y H:i", strtotime($com['creado_en'])) ?>
+                <?php if ($com['editado_en']): ?>
+                    (editado el <?= date("d/m/Y H:i", strtotime($com['editado_en'])) ?>)
+                <?php endif; ?>
+            </small>
+        </div>
         <p><?= nl2br(htmlspecialchars($com['contenido'])) ?></p>
+        <?php if (isset($_SESSION['usuario']) && ($_SESSION['usuario'] == $com['usuario_id'] || (isset($_SESSION['es_admin']) && $_SESSION['es_admin'] === true))): ?>
+            <div class="comentario-acciones">
+                <a href="<?= BASE_URL ?>/comentarios/editar_comentario.php?id=<?= $com['comentario_id'] ?>&producto_id=<?= $id ?>" class="btn-accion-comentario editar">Editar</a>
+                <form method="POST" action="<?= BASE_URL ?>/comentarios/eliminar_comentario.php" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este comentario?');">
+                    <input type="hidden" name="comentario_id" value="<?= $com['comentario_id'] ?>">
+                    <input type="hidden" name="producto_id_redirect" value="<?= $id ?>">
+                    <button type="submit" class="btn-accion-comentario eliminar">Eliminar</button>
+                </form>
+            </div>
+        <?php endif; ?>
       </div>
     <?php endforeach; ?>
   <?php endif; ?>
 
   <?php if (isset($_SESSION['usuario'])): ?>
     <form method="POST" action="<?= BASE_URL ?>/comentarios/guardar.php" id="form-comentario" class="form-comentario">
-      <textarea name="contenido" placeholder="Deja tu comentario..." required class="form-control"></textarea><br>
-      <input type="hidden" name="producto_id" value="<?= $id ?>">
+      <label for="contenidoComentario" class="sr-only">Tu comentario:</label> <textarea id="contenidoComentario" name="contenido" placeholder="Deja tu comentario..." required class="form-control"></textarea>
+      <span class="error-js-mensaje" id="error-contenido-comentario"></span> <input type="hidden" name="producto_id" value="<?= $id ?>">
       <button type="submit" class="btn-3">Enviar Comentario</button>
     </form>
   <?php else: ?>

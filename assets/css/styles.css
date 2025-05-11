@@ -613,3 +613,136 @@ hr.separator-line {
 .card-register form p a:hover {
     color: #c08eff;
 }
+.perfil-card {
+    max-width: 550px; /* Un poco más ancho */
+    margin: 50px auto; /* Reducido el margen superior */
+    background-color: #2c104d; /* Un tono ligeramente diferente del morado oscuro */
+    padding: 40px; /* Aumentado el padding */
+    border-radius: 16px; /* Bordes más redondeados */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada y moderna */
+    text-align: left; /* Cambiado a izquierda para la sección de enlaces */
+    animation: fadeInUp 0.6s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Un borde sutil */
+}
+
+.perfil-header {
+    margin-bottom: 30px; /* Más espacio debajo del encabezado */
+    text-align: center; /* Centrar la información del header */
+}
+
+.avatar-perfil {
+    width: 120px; /* Avatar un poco más grande */
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    object-fit: cover;
+    background-color: #3e2061;
+    border: 4px solid #a972ff; /* Borde más destacado */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra sutil al avatar */
+}
+
+.perfil-header h2 {
+    color: #f0f0f0; /* Texto del nombre más claro */
+    font-size: 1.8em; /* Nombre un poco más grande */
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.perfil-header p {
+    color: #ccc; /* Email un poco más suave */
+    font-size: 1.1em;
+    margin-bottom: 0;
+}
+
+.perfil-header small {
+    color: #aaa;
+    display: block;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+
+.perfil-account-links {
+    margin-top: 30px;
+}
+
+.perfil-account-links h3 {
+    color: #a972ff;
+    font-size: 1.4em;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(169, 114, 255, 0.3);
+}
+
+.perfil-account-links ul {
+    padding-left: 20px; /* Añadir indentación a la lista */
+    list-style: none; /* Ocultar los puntos de la lista */
+}
+
+.perfil-account-links ul li {
+    margin-bottom: 10px;
+}
+
+.perfil-account-links ul li a {
+    color: #e0e0e0;
+    transition: color 0.3s ease;
+    display: block; /* Para que el botón ocupe todo el ancho si lo deseas */
+    padding: 8px 0; /* Añadir un poco de padding vertical a los enlaces */
+}
+
+.perfil-account-links ul li a:hover {
+    color: #c08eff;
+}
+
+/* Estilo para el botón de cerrar sesión dentro de la lista */
+.perfil-account-links ul li .btn-logout {
+    display: inline-block; /* Volver a inline-block para que se ajuste al contenido */
+    width: auto; /* Ajustar al contenido */
+    padding: 10px 20px; /* Ajustar el padding del botón */
+    font-size: 0.95em;
+    background-color: transparent; /* Fondo transparente para que parezca un enlace */
+    border: 2px solid #6b45b3; /* Mantener el borde del botón */
+    color: #e0e0e0;
+    border-radius: 25px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none; /* Quitar subrayado del enlace */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+    margin-top: 10px; /* Espacio superior si es necesario */
+}
+
+.perfil-account-links ul li .btn-logout:hover {
+    background-color: #6b45b3;
+    color: #ffffff;
+}
+
+/* Opcional: Animación sutil al avatar */
+.avatar-perfil:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Animación fadeInUp (asegúrate de que esté definido en tu CSS general si no lo está) */
+@keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+.error-js-mensaje {
+    display: none; /* Oculto por defecto, JS lo muestra */
+    color: #e63946; /* Un rojo para errores */
+    font-size: 0.85em;
+    margin-top: 5px;
+    margin-bottom: 10px; /* Espacio si hay múltiples errores bajo un grupo */
+    padding-left: 5px;
+}
+input.input-error, textarea.input-error {
+    border-color: #e63946 !important; /* Para asegurar que se vea */
+    box-shadow: 0 0 0 1px #e63946 !important;
+}
+/* Si tienes un span cerca del dropzone para el error de imagen */
+#error-dropzone {
+    display: block; /* o inline-block */
+    color: #e63946;
+    font-size: 0.85em;
+    margin-top: 5px;
+}

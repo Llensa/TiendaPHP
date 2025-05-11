@@ -35,4 +35,216 @@
   .product h3, .product p {
     color: white;
   }
-  
+  /* Para el admin/dragdrop.js */
+.spinner {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spinner-border .75s linear infinite;
+    vertical-align: text-bottom;
+    margin-left: 5px;
+}
+@keyframes spinner-border {
+    to { transform: rotate(360deg); }
+}
+.btn-clear-img {
+    background: #555; color: white; border:none; padding: 3px 8px; font-size:0.8em; cursor:pointer; border-radius:3px; margin-left:5px;
+}
+.btn-clear-img:hover{ background: #777;}
+/* admin.css - Estilos para el panel de administración */
+
+body.admin-page { /* Podrías añadir esta clase al body en las páginas de admin */
+    background-color: #18072b; /* Un fondo ligeramente diferente para admin */
+}
+
+.admin-dashboard h2,
+.admin-dashboard .stat-card h3 {
+    color: #e0e0e0;
+}
+
+.admin-dashboard .stat-card {
+    background-color: #2a0f4a;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    border: 1px solid #4a2f6a;
+}
+.admin-dashboard .stat-card p {
+    font-size: 2.5em;
+    font-weight: 700;
+    color: #a972ff;
+    margin: 10px 0 15px 0;
+}
+.admin-dashboard .stat-card .btn-3.btn-sm {
+    padding: 8px 15px;
+    font-size: 0.9em;
+}
+
+.admin-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+
+/* Formularios en Admin (heredan de .form-admin de styles.css si esa clase está presente) */
+/* Si quieres estilos específicos para admin que sobreescriban o complementen: */
+.form-admin { /* Esta clase ya está en styles.css, aquí puedes añadir más especificidad */
+    background-color: #250e42; /* Un poco diferente para formularios admin */
+    border: 1px solid #401f5f;
+}
+
+.form-admin h2, .form-admin h3 {
+    color: #c08eff; /* Títulos en admin un poco más brillantes */
+}
+
+
+/* Tabla de productos en admin/productos.php */
+.admin-product-grid { /* Ya definido en styles.css, aquí puedes ajustar */
+    gap: 25px; /* Más espacio si es necesario */
+}
+
+.admin-product-item { /* Ya definido en styles.css */
+    background-color: #250e42;
+    border: 1px solid #401f5f;
+}
+.admin-product-item img {
+    background-color: rgba(0,0,0,0.1); /* Fondo si las imágenes son transparentes */
+}
+.admin-product-actions .btn-3 {
+    margin: 5px;
+    font-size: 0.85em; /* Botones un poco más pequeños */
+    padding: 6px 12px;
+}
+.admin-product-actions .btn-editar {
+    border-color: #6bcfb5;
+    color: #6bcfb5;
+}
+.admin-product-actions .btn-editar:hover {
+    background-color: #6bcfb5;
+    color: #1e0a37;
+}
+.admin-product-actions .btn-eliminar {
+    border-color: #e63946;
+    color: #e63946;
+}
+.admin-product-actions .btn-eliminar:hover {
+    background-color: #e63946;
+    color: white;
+}
+
+/* Drop Zone (estilos base ya en styles.css) */
+.drop-zone { /* Puedes ajustar aquí si es necesario para admin */
+    background: #331650;
+    border-color: #7c52cc;
+}
+.drop-zone.dragover {
+    background-color: #4a2f6a;
+    border-color: #a972ff;
+}
+
+.btn-cancelar { /* Estilo para botones de cancelar en admin */
+    background-color: transparent;
+    border: 2px solid #6c757d;
+    color: #adb5bd;
+}
+.btn-cancelar:hover {
+    background-color: #6c757d;
+    color: white;
+}
+
+/* Page card genérica (para pedidos, lista deseos, etc., y admin) */
+.page-card {
+    background-color: #2a0f4a;
+    padding: 25px 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.page-card h2 {
+    color: #a972ff;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-align: center;
+    border-bottom: 1px solid rgba(169, 114, 255, 0.2);
+    padding-bottom: 15px;
+}
+.page-card p {
+    color: #d0d0d0;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+.placeholder-content {
+    border: 1px dashed #4a2f6a;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 15px;
+    color: #aaa;
+}
+.placeholder-content em {
+    display: block;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+.order-list, .wishlist-items {
+    list-style: none;
+    padding-left: 0;
+}
+.order-list li, .wishlist-items li {
+    background-color: #3a1f5a;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    border-left: 3px solid #a972ff;
+}
+.order-header strong { color: #e0e0e0; }
+.btn-sm { font-size: 0.85em; padding: 6px 10px !important; }
+
+/* Estilos para acciones de comentarios en producto.php */
+.comentario-acciones {
+    margin-top: 10px;
+    text-align: right;
+}
+.btn-accion-comentario {
+    font-size: 0.85em;
+    padding: 4px 8px;
+    margin-left: 8px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+}
+.btn-accion-comentario.editar {
+    border: 1px solid #6bcfb5;
+    color: #6bcfb5;
+}
+.btn-accion-comentario.editar:hover {
+    background-color: #6bcfb5;
+    color: #1e0a37;
+}
+.btn-accion-comentario.eliminar {
+    background-color: transparent;
+    border: 1px solid #e63946;
+    color: #e63946;
+    cursor: pointer; /* Para que parezca un botón */
+}
+.btn-accion-comentario.eliminar:hover {
+    background-color: #e63946;
+    color: white;
+}
+label.sr-only { /* Para accesibilidad si el label no es visible */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}
