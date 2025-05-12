@@ -2,6 +2,8 @@
 require_once '../db/db.php';
 include '../includes/header.php';
 
+
+
 if (!isset($_SESSION['usuario'])) {
     header('Location: ' . BASE_URL . '/auth/login.php?redirect=' . urlencode($_SERVER['REQUEST_URI']));
     exit;

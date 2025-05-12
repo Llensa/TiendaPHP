@@ -1,5 +1,7 @@
 <?php
 require_once '../db/db.php';
+
+
 include '../includes/header.php'; // Contiene session_start() y define BASE_URL
 
 if (!isset($_SESSION['usuario'])) {

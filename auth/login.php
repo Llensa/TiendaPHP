@@ -1,5 +1,9 @@
 <?php
 require_once '../db/db.php';
+
+
+
+
 include '../includes/header.php';
 
 $errores = [];

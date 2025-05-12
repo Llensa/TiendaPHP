@@ -1,5 +1,6 @@
 <?php
 require_once 'db/db.php';
+
 include 'includes/header.php';
 
 // Obtener los productos desde la base de datos
@@ -35,6 +36,10 @@ $nuevos_productos = $stmt_nuevos->fetchAll();
                     data-imagen="<?= BASE_URL ?>/assets/images/<?= htmlspecialchars($promo['imagen']) ?>">
                     Agregar al carrito
                 </button>
+                <button class="btn-3 btn-deseo" data-id="<?= $producto['id'] ?>">
+                  🤍 Agregar a Deseos
+                </button>
+
             </div>
             <div class="categorie-img">
                 <a href="<?= BASE_URL ?>/producto.php?id=<?= $promo['id'] ?>">
@@ -71,6 +76,10 @@ $nuevos_productos = $stmt_nuevos->fetchAll();
                             data-imagen="<?= BASE_URL ?>/assets/images/<?= htmlspecialchars($prod['imagen']) ?>">
                             Agregar al carrito
                         </button>
+                        <button class="btn-3 btn-deseo" data-id="<?= $producto['id'] ?>">
+                                 🤍 Agregar a Deseos
+                        </button>
+
                     </div>
                 </div>
             </div>

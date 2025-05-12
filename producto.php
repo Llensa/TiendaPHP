@@ -2,7 +2,6 @@
 require_once 'db/db.php';
 include 'includes/header.php';
 
-// ... (código existente para cargar producto sin cambios) ...
 if (!isset($_GET['id'])) {
     echo "<p class='container'>Producto no especificado.</p>";
     include 'includes/footer.php';
@@ -10,12 +9,13 @@ if (!isset($_GET['id'])) {
 }
 
 $id = filter_var($_GET['id'], FILTER_VALIDATE_INT);
-if (!$id || $id <=0) {
+if (!$id || $id <= 0) {
     echo "<p class='container'>ID de producto no válido.</p>";
     include 'includes/footer.php';
     exit;
 }
 
+// Obtener producto
 $stmt = $pdo->prepare("SELECT * FROM productos WHERE id = ?");
 $stmt->execute([$id]);
 $producto = $stmt->fetch();
@@ -26,6 +26,13 @@ if (!$producto) {
     exit;
 }
 
+// Verificar si ya está en deseos (si está logueado)
+$en_deseos = false;
+if (isset($_SESSION['usuario'])) {
+    $stmt = $pdo->prepare("SELECT 1 FROM lista_deseos WHERE usuario_id = ? AND producto_id = ?");
+    $stmt->execute([$_SESSION['usuario'], $producto['id']]);
+    $en_deseos = (bool) $stmt->fetch();
+}
 ?>
 
 <main class="container">
@@ -35,7 +42,9 @@ if (!$producto) {
         <img src="<?= BASE_URL ?>/assets/images/<?= htmlspecialchars($producto['imagen']) ?>" alt="<?= htmlspecialchars($producto['nombre']) ?>" class="product-detail-image">
     </div>
     <div class="product-txt product-detail-info">
-      <p><?= nl2br(htmlspecialchars($producto['descripcion'])) ?></p> <p class="precio">$<?= number_format($producto['precio'], 2, ',', '.') ?></p>
+      <p><?= nl2br(htmlspecialchars($producto['descripcion'])) ?></p>
+      <p class="precio">$<?= number_format($producto['precio'], 2, ',', '.') ?></p>
+
       <button class="btn-3 agregar-carrito"
           data-id="<?= $producto['id'] ?>"
           data-nombre="<?= htmlspecialchars($producto['nombre']) ?>"
@@ -43,6 +52,13 @@ if (!$producto) {
           data-imagen="<?= BASE_URL ?>/assets/images/<?= htmlspecialchars($producto['imagen']) ?>">
           Agregar al carrito
       </button>
+
+      <?php if (isset($_SESSION['usuario'])): ?>
+        <button class="btn-3 btn-deseo" data-id="<?= $producto['id'] ?>">
+          <?= $en_deseos ? '💔 Eliminar de Deseos' : '🤍 Agregar a Deseos' ?>
+        </button>
+      <?php endif; ?>
+
       <a href="<?= BASE_URL ?>/index.php" class="btn-3 btn-volver" style="margin-top:10px; display:inline-block;">Volver al inicio</a>
     </div>
   </div>
@@ -87,13 +103,14 @@ $comentarios = $stmt_comentarios->fetchAll();
             </small>
         </div>
         <p><?= nl2br(htmlspecialchars($com['contenido'])) ?></p>
-        <?php if (isset($_SESSION['usuario']) && ($_SESSION['usuario'] == $com['usuario_id'] || (isset($_SESSION['es_admin']) && $_SESSION['es_admin'] === true))): ?>
+
+        <?php if (isset($_SESSION['usuario']) && ($_SESSION['usuario'] == $com['usuario_id'] || ($_SESSION['es_admin'] ?? false))): ?>
             <div class="comentario-acciones">
-                <a href="<?= BASE_URL ?>/comentarios/editar_comentario.php?id=<?= $com['comentario_id'] ?>&producto_id=<?= $id ?>" class="btn-accion-comentario editar">Editar</a>
+                <a href="<?= BASE_URL ?>/comentarios/editar_comentario.php?id=<?= $com['comentario_id'] ?>&producto_id=<?= $id ?>" class="btn-accion-comentario btn-accion-comentario-editar">Editar</a>
                 <form method="POST" action="<?= BASE_URL ?>/comentarios/eliminar_comentario.php" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este comentario?');">
                     <input type="hidden" name="comentario_id" value="<?= $com['comentario_id'] ?>">
                     <input type="hidden" name="producto_id_redirect" value="<?= $id ?>">
-                    <button type="submit" class="btn-accion-comentario eliminar">Eliminar</button>
+                    <button type="submit" class="btn-accion-comentario btn-accion-comentario-eliminar">Eliminar</button>
                 </form>
             </div>
         <?php endif; ?>
@@ -103,8 +120,10 @@ $comentarios = $stmt_comentarios->fetchAll();
 
   <?php if (isset($_SESSION['usuario'])): ?>
     <form method="POST" action="<?= BASE_URL ?>/comentarios/guardar.php" id="form-comentario" class="form-comentario">
-      <label for="contenidoComentario" class="sr-only">Tu comentario:</label> <textarea id="contenidoComentario" name="contenido" placeholder="Deja tu comentario..." required class="form-control"></textarea>
-      <span class="error-js-mensaje" id="error-contenido-comentario"></span> <input type="hidden" name="producto_id" value="<?= $id ?>">
+      <label for="contenidoComentario" class="sr-only">Tu comentario:</label>
+      <textarea id="contenidoComentario" name="contenido" placeholder="Deja tu comentario..." required class="form-control"></textarea>
+      <span class="error-js-mensaje" id="error-contenido-comentario"></span>
+      <input type="hidden" name="producto_id" value="<?= $id ?>">
       <button type="submit" class="btn-3">Enviar Comentario</button>
     </form>
   <?php else: ?>

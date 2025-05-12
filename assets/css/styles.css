@@ -746,3 +746,46 @@ input.input-error, textarea.input-error {
     font-size: 0.85em;
     margin-top: 5px;
 }
+.btn-deseo {
+    margin-top: 10px;
+    background-color: transparent;
+    border: 2px dashed #a972ff;
+    color: #a972ff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.btn-deseo:hover {
+    background-color: #a972ff;
+    color: #fff;
+}
+.btn-accion-comentario {
+    display: inline-block;
+    padding: 5px 15px;
+    font-size: 0.9em;
+    border: 2px solid transparent;
+    border-radius: 20px;
+    margin: 5px 5px 0 0;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-accion-comentario-editar {
+    color: #6ab0f3;
+    border-color: #6ab0f3;
+    background-color: transparent;
+}
+.btn-accion-comentario-editar:hover {
+    background-color: #6ab0f3;
+    color: white;
+}
+
+.btn-accion-comentario-eliminar {
+    color: #ff8080;
+    border-color: #ff8080;
+    background-color: transparent;
+}
+.btn-accion-comentario-eliminar:hover {
+    background-color: #ff8080;
+    color: white;
+}

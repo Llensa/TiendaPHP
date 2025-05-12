@@ -5,7 +5,13 @@ error_reporting(E_ALL);
 
 require_once '../db/db.php';
 // require_once '../vendor/autoload.php'; // Ya está en enviar_verificacion.php
+
+
 include '../includes/header.php';
+
+
+
+
 
 $errores = [];
 $nombre_form = ''; // Para repoblar
