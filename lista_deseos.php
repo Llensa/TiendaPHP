@@ -8,9 +8,10 @@ if (!isset($_SESSION['usuario'])) {
 }
 
 $stmt = $pdo->prepare("
-    SELECT p.* FROM lista_deseos ld
-    JOIN productos p ON ld.producto_id = p.id
-    WHERE ld.usuario_id = ?
+    SELECT p.id, p.nombre, p.precio, p.imagen 
+    FROM deseos d 
+    JOIN productos p ON d.producto_id = p.id 
+    WHERE d.usuario_id = ?
 ");
 $stmt->execute([$_SESSION['usuario']]);
 $deseos = $stmt->fetchAll();
@@ -20,27 +21,18 @@ $deseos = $stmt->fetchAll();
   <div class="page-card">
     <h2>Mi Lista de Deseos</h2>
     <?php if (empty($deseos)): ?>
-        <p>No tienes productos en tu lista de deseos.</p>
+        <p>No hay productos en tu lista de deseos aún.</p>
     <?php else: ?>
-        <div class="product-grid">
-          <?php foreach ($deseos as $prod): ?>
-            <div class="product">
-              <img src="<?= BASE_URL ?>/assets/images/<?= htmlspecialchars($prod['imagen']) ?>" alt="<?= $prod['nombre'] ?>">
-              <div class="product-txt">
-                <h3><?= $prod['nombre'] ?></h3>
-                <p class="precio">$<?= number_format($prod['precio'], 2, ',', '.') ?></p>
-                <button class="btn-3 agregar-carrito"
-                  data-id="<?= $prod['id'] ?>"
-                  data-nombre="<?= $prod['nombre'] ?>"
-                  data-precio="<?= $prod['precio'] ?>"
-                  data-imagen="<?= BASE_URL ?>/assets/images/<?= $prod['imagen'] ?>">
-                  Agregar al carrito
-                </button>
-              </div>
-            </div>
-          <?php endforeach; ?>
-        </div>
+        <ul class="wishlist-items">
+            <?php foreach ($deseos as $p): ?>
+                <li>
+                    <strong><?= htmlspecialchars($p['nombre']) ?></strong> — $<?= number_format($p['precio'], 2, ',', '.') ?>
+                    <a href="<?= BASE_URL ?>/producto.php?id=<?= $p['id'] ?>" class="btn-3 btn-sm" style="float:right;">Ver producto</a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
     <?php endif; ?>
+    <a href="<?= BASE_URL ?>/perfil.php" class="btn-3" style="margin-top:20px;">Volver al perfil</a>
   </div>
 </main>
 

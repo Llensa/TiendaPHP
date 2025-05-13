@@ -22,6 +22,9 @@ $current_page = basename($_SERVER['PHP_SELF']); // Definido al inicio
         echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/admin.css">';
     }
   ?>
+   <script>
+    const BASE_URL = "<?= BASE_URL ?>";
+  </script>
 </head>
 <body>
 

@@ -153,4 +153,67 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+
+        // Validación del formulario de checkout (form id: formCheckout)
+    const formCheckout = document.getElementById('formCheckout');
+    if (formCheckout) {
+        formCheckout.addEventListener("submit", (e) => {
+            limpiarTodosLosErrores(formCheckout);
+            let valido = true;
+
+            const nombre = formCheckout.nombreCompleto;
+            const direccion = formCheckout.direccionEnvio;
+            const ciudad = formCheckout.ciudad;
+            const cp = formCheckout.codigoPostal;
+            const tarjeta = formCheckout.numeroTarjeta;
+            const mes = formCheckout.mesExp;
+            const anio = formCheckout.anioExp;
+            const cvc = formCheckout.cvc;
+
+            if (nombre.value.trim() === "") {
+                mostrarError(nombre, "El nombre completo es obligatorio.");
+                valido = false;
+            }
+            if (direccion.value.trim() === "") {
+                mostrarError(direccion, "La dirección es obligatoria.");
+                valido = false;
+            }
+            if (ciudad.value.trim() === "") {
+                mostrarError(ciudad, "La ciudad es obligatoria.");
+                valido = false;
+            }
+            if (cp.value.trim() === "") {
+                mostrarError(cp, "El código postal es obligatorio.");
+                valido = false;
+            }
+            if (!/^\d{13,19}$/.test(tarjeta.value.replace(/\s/g, ''))) {
+                mostrarError(tarjeta, "Número de tarjeta inválido.");
+                valido = false;
+            }
+
+            const mesVal = parseInt(mes.value);
+            if (!/^\d{2}$/.test(mes.value) || mesVal < 1 || mesVal > 12) {
+                mostrarError(mes, "Mes inválido (MM).");
+                valido = false;
+            }
+
+            const anioActual = new Date().getFullYear();
+            const anioVal = parseInt(anio.value);
+            if (!/^\d{4}$/.test(anio.value) || anioVal < anioActual) {
+                mostrarError(anio, "Año inválido (AAAA).");
+                valido = false;
+            }
+
+            if (!/^\d{3,4}$/.test(cvc.value)) {
+                mostrarError(cvc, "CVC inválido.");
+                valido = false;
+            }
+
+            if (!valido) {
+                e.preventDefault();
+            }
+        });
+    }
+
 });
