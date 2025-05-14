@@ -248,3 +248,23 @@ label.sr-only { /* Para accesibilidad si el label no es visible */
     clip: rect(0,0,0,0);
     border: 0;
 }
+.precio-original {
+  text-decoration: line-through;
+  color: #aaa;
+  margin-right: 8px;
+}
+
+.precio-descuento {
+  font-weight: bold;
+  color: #a972ff;
+  font-size: 1.1em;
+}
+
+.etiqueta-descuento {
+  background-color: #a972ff;
+  color: white;
+  padding: 2px 6px;
+  font-size: 0.85em;
+  border-radius: 4px;
+  margin-left: 5px;
+}

@@ -1,5 +1,6 @@
 <?php
 require_once 'db/db.php';
+require_once 'helpers/Csrf.php';
 include 'includes/header.php';
 
 if (!isset($_GET['id'])) {
@@ -43,7 +44,18 @@ if (isset($_SESSION['usuario'])) {
     </div>
     <div class="product-txt product-detail-info">
       <p><?= nl2br(htmlspecialchars($producto['descripcion'])) ?></p>
-      <p class="precio">$<?= number_format($producto['precio'], 2, ',', '.') ?></p>
+      <?php if ($producto['promocion'] && $producto['descuento'] > 0): 
+    $precioFinal = $producto['precio'] * (1 - $producto['descuento'] / 100);
+?>
+  <div class="precios">
+    <span class="precio-original">$<?= number_format($producto['precio'], 2, ',', '.') ?></span>
+    <span class="precio-descuento">$<?= number_format($precioFinal, 2, ',', '.') ?></span>
+    <span class="etiqueta-descuento">-<?= $producto['descuento'] ?>%</span>
+  </div>
+      <?php else: ?>
+  <p class="precio">$<?= number_format($producto['precio'], 2, ',', '.') ?></p>
+      <?php endif; ?>
+
 
       <button class="btn-3 agregar-carrito"
           data-id="<?= $producto['id'] ?>"
@@ -108,6 +120,7 @@ $comentarios = $stmt_comentarios->fetchAll();
             <div class="comentario-acciones">
                 <a href="<?= BASE_URL ?>/comentarios/editar_comentario.php?id=<?= $com['comentario_id'] ?>&producto_id=<?= $id ?>" class="btn-accion-comentario btn-accion-comentario-editar">Editar</a>
                 <form method="POST" action="<?= BASE_URL ?>/comentarios/eliminar_comentario.php" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este comentario?');">
+                  <?= Csrf::inputField() ?>
                     <input type="hidden" name="comentario_id" value="<?= $com['comentario_id'] ?>">
                     <input type="hidden" name="producto_id_redirect" value="<?= $id ?>">
                     <button type="submit" class="btn-accion-comentario btn-accion-comentario-eliminar">Eliminar</button>
@@ -120,6 +133,7 @@ $comentarios = $stmt_comentarios->fetchAll();
 
   <?php if (isset($_SESSION['usuario'])): ?>
     <form method="POST" action="<?= BASE_URL ?>/comentarios/guardar.php" id="form-comentario" class="form-comentario">
+      <?= Csrf::inputField() ?>
       <label for="contenidoComentario" class="sr-only">Tu comentario:</label>
       <textarea id="contenidoComentario" name="contenido" placeholder="Deja tu comentario..." required class="form-control"></textarea>
       <span class="error-js-mensaje" id="error-contenido-comentario"></span>

@@ -33,6 +33,11 @@
      }
 ?>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<?php if (isset($_SESSION['usuario'])): ?>
+    <script src="<?= BASE_URL ?>/assets/js/deseos.js"></script>
+<?php endif; ?>
+
+
 
 </body>
 </html>

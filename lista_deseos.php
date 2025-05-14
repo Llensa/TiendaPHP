@@ -9,7 +9,7 @@ if (!isset($_SESSION['usuario'])) {
 
 $stmt = $pdo->prepare("
     SELECT p.id, p.nombre, p.precio, p.imagen 
-    FROM deseos d 
+    FROM lista_deseos d 
     JOIN productos p ON d.producto_id = p.id 
     WHERE d.usuario_id = ?
 ");
@@ -20,18 +20,28 @@ $deseos = $stmt->fetchAll();
 <main class="container">
   <div class="page-card">
     <h2>Mi Lista de Deseos</h2>
+
     <?php if (empty($deseos)): ?>
-        <p>No hay productos en tu lista de deseos aún.</p>
+        <div class="placeholder-content">
+            <p><em>No tenés productos en tu lista de deseos aún.</em></p>
+        </div>
     <?php else: ?>
-        <ul class="wishlist-items">
+        <div class="grid wishlist-grid">
             <?php foreach ($deseos as $p): ?>
-                <li>
-                    <strong><?= htmlspecialchars($p['nombre']) ?></strong> — $<?= number_format($p['precio'], 2, ',', '.') ?>
-                    <a href="<?= BASE_URL ?>/producto.php?id=<?= $p['id'] ?>" class="btn-3 btn-sm" style="float:right;">Ver producto</a>
-                </li>
+                <div class="wishlist-item">
+                    <div class="wishlist-img">
+                        <img src="<?= BASE_URL ?>/assets/images/<?= htmlspecialchars($p['imagen']) ?>" alt="<?= htmlspecialchars($p['nombre']) ?>">
+                    </div>
+                    <div class="wishlist-info">
+                        <h3><?= htmlspecialchars($p['nombre']) ?></h3>
+                        <p class="precio">$<?= number_format($p['precio'], 2, ',', '.') ?></p>
+                        <a href="<?= BASE_URL ?>/producto.php?id=<?= $p['id'] ?>" class="btn-3 btn-sm">Ver producto</a>
+                    </div>
+                </div>
             <?php endforeach; ?>
-        </ul>
+        </div>
     <?php endif; ?>
+
     <a href="<?= BASE_URL ?>/perfil.php" class="btn-3" style="margin-top:20px;">Volver al perfil</a>
   </div>
 </main>

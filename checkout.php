@@ -1,6 +1,23 @@
 <?php
 require_once 'db/db.php';
+require_once 'helpers/Csrf.php';
 include 'includes/header.php';
+
+$direcciones = [];
+
+if (isset($_SESSION['usuario'])) {
+  $stmt = $pdo->prepare("
+    SELECT 
+        id, 
+        CONCAT_WS(' ', calle, numero, IFNULL(apartamento, '')) AS direccion, 
+        ciudad, 
+        codigo_postal 
+    FROM direcciones 
+    WHERE usuario_id = ?");
+
+    $stmt->execute([$_SESSION['usuario']]);
+    $direcciones = $stmt->fetchAll();
+}
 ?>
 
 <main class="container">
@@ -32,11 +49,23 @@ include 'includes/header.php';
 
         <div id="formulario-pago" class="form-autenticacion" style="margin-top:20px;">
             <h3>Información de Envío y Pago</h3>
-            <p style="text-align:center; margin-bottom:20px;">
-                <em>Integración con pasarela de pagos y formulario de envío en construcción.</em>
-            </p>
 
-            <form id="formCheckout">
+            <?php if (!empty($direcciones)): ?>
+            <div class="form-grupo">
+                <label for="direccionGuardada">Seleccionar dirección guardada:</label>
+                <select id="direccionGuardada" class="form-control">
+                    <option value="">-- Seleccioná una dirección --</option>
+                    <?php foreach ($direcciones as $dir): ?>
+                        <option value="<?= htmlspecialchars($dir['direccion']) ?>|<?= htmlspecialchars($dir['ciudad']) ?>|<?= htmlspecialchars($dir['codigo_postal']) ?>">
+                            <?= htmlspecialchars($dir['direccion']) ?> - <?= htmlspecialchars($dir['ciudad']) ?> (CP: <?= htmlspecialchars($dir['codigo_postal']) ?>)
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <?php endif; ?>
+
+            <form id="formCheckout" method="POST" action="#">
+                <?= Csrf::inputField() ?>
                 <div class="form-grupo">
                     <label for="nombreCompleto">Nombre Completo:</label>
                     <input type="text" id="nombreCompleto" name="nombreCompleto" class="form-control" required>
@@ -98,7 +127,21 @@ include 'includes/header.php';
 
 <script>
     const BASE_URL = "<?= BASE_URL ?>";
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const direccionGuardada = document.getElementById('direccionGuardada');
+        if (direccionGuardada) {
+            direccionGuardada.addEventListener('change', () => {
+                const valor = direccionGuardada.value;
+                if (valor) {
+                    const [dir, ciudad, cp] = valor.split('|');
+                    document.getElementById('direccionEnvio').value = dir;
+                    document.getElementById('ciudad').value = ciudad;
+                    document.getElementById('codigoPostal').value = cp;
+                }
+            });
+        }
+    });
 </script>
 <script src="<?= BASE_URL ?>/assets/js/checkout.js"></script>
-
 <?php include 'includes/footer.php'; ?>

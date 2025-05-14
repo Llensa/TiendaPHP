@@ -1,6 +1,6 @@
 <?php
 require_once 'db/db.php';
-
+require_once 'helpers/Csrf.php';
 include 'includes/header.php';
 
 if (!isset($_SESSION['usuario'])) {
@@ -37,6 +37,8 @@ if ($usuario) {
                 <li><a href="<?= BASE_URL ?>/direcciones.php">Mis Direcciones</a></li>
                 <li><a href="<?= BASE_URL ?>/detalles_cuenta.php">Detalles de la Cuenta</a></li>
                 <li><a href="<?= BASE_URL ?>/auth/logout.php" class="btn-3 btn-logout">Cerrar Sesión</a></li>
+                <li><a href="<?= BASE_URL ?>/lista_deseos.php">Mi Lista de Deseos</a></li>
+
             </ul>
         </div>
     </div>

@@ -21,6 +21,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 breakpoints: { 0: { slidesPerView: 1 }, 520: { slidesPerView: 2 }, 950: { slidesPerView: 3 } }
             });
         }
+
+        const swiperHeroExists = document.querySelector(".swiperHero");
+        if (swiperHeroExists) {
+             new Swiper(".swiperHero", {
+               loop: true,
+               autoplay: { delay: 5000, disableOnInteraction: false },
+               navigation: {
+               nextEl: ".swiper-button-next",
+               prevEl: ".swiper-button-prev"
+                }
+            });
+        }
+
+         document.querySelectorAll('.toggle-detalle').forEach(item => {
+         item.addEventListener('click', () => {
+        const targetId = item.dataset.target;
+        const detalle = document.getElementById(targetId);
+        if (detalle) detalle.style.display = (detalle.style.display === 'none') ? 'block' : 'none';
+            });
+        });
     }
 
     const dropdownCarrito = document.getElementById('dropdown-carrito');
@@ -194,6 +214,8 @@ document.addEventListener("DOMContentLoaded", () => {
             dropdownCarrito.classList.remove('visible');
         }
     });
+    
+       
 
     cargarCarritoDesdeLocalStorage();
 });

@@ -1,9 +1,6 @@
 <?php
 require_once '../db/db.php';
-
-
-
-
+require_once '../helpers/Csrf.php';
 include '../includes/header.php';
 
 $errores = [];

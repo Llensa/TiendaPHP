@@ -4,14 +4,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once '../db/db.php';
-// require_once '../vendor/autoload.php'; // Ya está en enviar_verificacion.php
-
-
+require_once '../helpers/Csrf.php';
 include '../includes/header.php';
-
-
-
-
 
 $errores = [];
 $nombre_form = ''; // Para repoblar
@@ -85,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <form method="POST" action="<?= BASE_URL ?>/auth/register.php" id="formRegister"> <div class="form-grupo">
+      <?= Csrf::inputField() ?>
         <label for="nombreRegister">Nombre completo</label>
         <input type="text" id="nombreRegister" name="nombre" placeholder="Tu nombre" required class="form-control" value="<?= htmlspecialchars($nombre_form) ?>">
         <span class="error-js-mensaje" id="error-nombreRegister"></span>

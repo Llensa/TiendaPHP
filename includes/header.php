@@ -86,44 +86,35 @@ $current_page = basename($_SERVER['PHP_SELF']); // Definido al inicio
   </div>
 </div>
 
-<?php if ($current_page === 'index.php'): ?>
-<div class="header-content container">
-  <div class="swiper mySwiper-1">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide">
-          <div class="header-info">
-              <div class="header-txt">
-                  <h1>Audífonos Pro X</h1>
-                  <div class="precios">
-                      <p class="precio-1">$299.99</p>
-                      <p class="precio-2">$249.99</p>
-                  </div>
-                  <a href="<?= BASE_URL ?>/producto.php?id=1" class="btn-1">Información</a>
-              </div>
-              <div class="header-img">
-                  <img src="<?= BASE_URL ?>/assets/images/bg1.png" alt="Audífonos Pro X">
-              </div>
-          </div>
-      </div>
-      <div class="swiper-slide">
-          <div class="header-info">
-              <div class="header-txt">
-                  <h1>Sonido Inmersivo Z</h1>
-                  <div class="precios">
-                      <p class="precio-1">$199.99</p>
-                      <p class="precio-2">$159.99</p>
-                  </div>
-                  <a href="<?= BASE_URL ?>/producto.php?id=2" class="btn-1">Información</a>
-              </div>
-              <div class="header-img">
-                  <img src="<?= BASE_URL ?>/assets/images/bg2.png" alt="Sonido Inmersivo Z">
-              </div>
-          </div>
-      </div>
+<?php if (!empty($promociones)): ?>
+<section class="swiper-container container promo-slider">
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            <?php foreach ($promociones as $promo): 
+                $descuento = $promo['descuento'];
+                $precioOriginal = $promo['precio'];
+                $precioFinal = $precioOriginal - ($precioOriginal * $descuento / 100);
+            ?>
+            <div class="swiper-slide">
+                <div class="slider-content">
+                    <div class="slider-info">
+                        <h2><?= htmlspecialchars($promo['nombre']) ?></h2>
+                        <p>
+                            <del>$<?= number_format($precioOriginal, 2) ?></del>
+                            <strong style="color:#a972ff;">$<?= number_format($precioFinal, 2) ?></strong>
+                        </p>
+                        <a href="<?= BASE_URL ?>/producto.php?id=<?= $promo['id'] ?>" class="btn-3">Información</a>
+                    </div>
+                    <div class="slider-img">
+                        <img src="<?= BASE_URL ?>/assets/images/<?= htmlspecialchars($promo['imagen']) ?>" alt="<?= htmlspecialchars($promo['nombre']) ?>">
+                    </div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
     </div>
-    <div class="swiper-button-next"></div>
-    <div class="swiper-button-prev"></div>
-    <div class="swiper-pagination"></div>
-  </div>
-</div>
+</section>
 <?php endif; ?>
