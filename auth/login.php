@@ -1,4 +1,6 @@
 <?php
+// login.php
+session_start(); // Asegúrate de que esté aquí, antes de cualquier otro código o HTML.
 require_once '../db/db.php';
 require_once '../helpers/Csrf.php';
 include '../includes/header.php';
@@ -34,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($usuario) {
             if ($usuario['verificado'] == 1) {
                 if (password_verify($password, $usuario['password'])) {
-                    $_SESSION['usuario'] = $usuario['id'];
+                    $_SESSION['usuario_id'] = $usuario['id']; // Cambiamos a usuario_id para consistencia
                     $_SESSION['nombre_usuario'] = $usuario['nombre']; // Guardar nombre para saludos
                     $_SESSION['es_admin'] = ($usuario['rol'] === 'admin'); // Establecer si es admin
                     
@@ -54,30 +56,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <main class="container">
-  <div class="form-autenticacion card-login" id="formLoginContainer"> <h2>Iniciar Sesión</h2>
+    <div class="form-autenticacion card-login" id="formLoginContainer">
+        <h2>Iniciar Sesión</h2>
 
-    <?php if (!empty($errores)): ?>
-      <div class="errores-formulario">
-        <?php foreach ($errores as $e): ?>
-          <p class="error-mensaje"><?= $e ?></p>
-        <?php endforeach; ?>
-      </div>
-    <?php endif; ?>
+        <?php if (!empty($errores)): ?>
+            <div class="errores-formulario">
+                <?php foreach ($errores as $e): ?>
+                    <p class="error-mensaje"><?= $e ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
 
-    <form method="POST" action="<?= BASE_URL ?>/auth/login.php<?= isset($_GET['redirect']) ? '?redirect=' . urlencode($_GET['redirect']) : '' ?>" id="formLogin"> <div class="form-grupo">
-        <label for="emailLogin">Correo electrónico</label>
-        <input type="email" id="emailLogin" name="email" placeholder="tu@correo.com" required class="form-control" value="<?= htmlspecialchars($email_form ?? '') ?>">
-        <span class="error-js-mensaje" id="error-emailLogin"></span>
-      </div>
-      <div class="form-grupo">
-        <label for="passwordLogin">Contraseña</label>
-        <input type="password" id="passwordLogin" name="password" placeholder="Tu contraseña" required class="form-control">
-        <span class="error-js-mensaje" id="error-passwordLogin"></span>
-      </div>
-      <button type="submit" class="btn-3">Entrar</button>
-      <p>¿No tienes cuenta? <a href="<?= BASE_URL ?>/auth/register.php">Regístrate aquí</a></p>
-    </form>
-  </div>
+        <form method="POST" action="<?= BASE_URL ?>/auth/login.php<?= isset($_GET['redirect']) ? '?redirect=' . urlencode($_GET['redirect']) : '' ?>" id="formLogin">
+            <div class="form-grupo">
+                <?= Csrf::inputField() ?>
+                <label for="emailLogin">Correo electrónico</label>
+                <input type="email" id="emailLogin" name="email" placeholder="tu@correo.com" required class="form-control" value="<?= htmlspecialchars($email_form ?? '') ?>">
+                <span class="error-js-mensaje" id="error-emailLogin"></span>
+            </div>
+            <div class="form-grupo">
+                <label for="passwordLogin">Contraseña</label>
+                <input type="password" id="passwordLogin" name="password" placeholder="Tu contraseña" required class="form-control">
+                <span class="error-js-mensaje" id="error-passwordLogin"></span>
+            </div>
+            <button type="submit" class="btn-3">Entrar</button>
+            <p>¿No tienes cuenta? <a href="<?= BASE_URL ?>/auth/register.php">Regístrate aquí</a></p>
+        </form>
+    </div>
 </main>
 
 <?php include '../includes/footer.php'; ?>

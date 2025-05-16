@@ -4,19 +4,34 @@ require_once 'helpers/Csrf.php';
 include 'includes/header.php';
 
 $direcciones = [];
+$nombreCompleto = $_SESSION['nombre_usuario'] ?? '';
 
 if (isset($_SESSION['usuario'])) {
-  $stmt = $pdo->prepare("
-    SELECT 
-        id, 
-        CONCAT_WS(' ', calle, numero, IFNULL(apartamento, '')) AS direccion, 
-        ciudad, 
-        codigo_postal 
-    FROM direcciones 
-    WHERE usuario_id = ?");
-
+    $stmt = $pdo->prepare("
+        SELECT
+            id,
+            calle,
+            numero,
+            apartamento,
+            ciudad,
+            provincia,
+            codigo_postal,
+            pais
+        FROM direcciones
+        WHERE usuario_id = ?
+    ");
     $stmt->execute([$_SESSION['usuario']]);
     $direcciones = $stmt->fetchAll();
+}
+
+$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+$host = $_SERVER['HTTP_HOST'];
+$path = rtrim(dirname($_SERVER['PHP_SELF']), '/\\'); // Obtiene la ruta del directorio actual
+$base = $protocol . '://' . $host . $path;
+
+// Si tu BASE_URL ya está definida en otro lugar, asegúrate de que solo sea la base.
+if (!defined('BASE_URL')) {
+    define('BASE_URL', $base);
 }
 ?>
 
@@ -26,23 +41,18 @@ if (isset($_SESSION['usuario'])) {
 
         <div id="resumen-carrito-checkout">
             <h3>Resumen de tu Pedido</h3>
-            <table id="tabla-checkout-carrito">
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-                        <th>Precio Unit.</th>
-                        <th>Subtotal</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3" style="text-align:right; font-weight:bold;">Total:</td>
-                        <td id="total-checkout-carrito" style="font-weight:bold;">$0.00</td>
-                    </tr>
-                </tfoot>
-            </table>
+            <div class="checkout-item-header">
+                <div class="checkout-col-product">Producto</div>
+                <div class="checkout-col-quantity">Cantidad</div>
+                <div class="checkout-col-price">Precio Unit.</div>
+                <div class="checkout-col-subtotal">Subtotal</div>
+            </div>
+            <div id="checkout-productos">
+            </div>
+            <div class="checkout-total">
+                <strong>Total:</strong>
+                <span id="total-checkout-carrito">$0.00</span>
+            </div>
         </div>
 
         <hr class="separator-line">
@@ -51,24 +61,34 @@ if (isset($_SESSION['usuario'])) {
             <h3>Información de Envío y Pago</h3>
 
             <?php if (!empty($direcciones)): ?>
-            <div class="form-grupo">
-                <label for="direccionGuardada">Seleccionar dirección guardada:</label>
-                <select id="direccionGuardada" class="form-control">
-                    <option value="">-- Seleccioná una dirección --</option>
-                    <?php foreach ($direcciones as $dir): ?>
-                        <option value="<?= htmlspecialchars($dir['direccion']) ?>|<?= htmlspecialchars($dir['ciudad']) ?>|<?= htmlspecialchars($dir['codigo_postal']) ?>">
-                            <?= htmlspecialchars($dir['direccion']) ?> - <?= htmlspecialchars($dir['ciudad']) ?> (CP: <?= htmlspecialchars($dir['codigo_postal']) ?>)
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
+                <div class="form-grupo">
+                    <label for="direccionGuardada">Seleccionar dirección guardada:</label>
+                    <select id="direccionGuardada" class="form-control">
+                        <option value="">-- Seleccioná una dirección --</option>
+                        <?php foreach ($direcciones as $dir): ?>
+                            <?php
+                                $direccionCompleta = $dir['calle'] . ' ' . $dir['numero'];
+                                if (!empty($dir['apartamento'])) $direccionCompleta .= ', ' . $dir['apartamento'];
+                                $value = implode('|', [
+                                    htmlspecialchars($direccionCompleta),
+                                    htmlspecialchars($dir['ciudad']),
+                                    htmlspecialchars($dir['codigo_postal'])
+                                ]);
+                            ?>
+                            <option value="<?= $value ?>">
+                                <?= htmlspecialchars($direccionCompleta) ?> - <?= htmlspecialchars($dir['ciudad']) ?> (CP: <?= htmlspecialchars($dir['codigo_postal']) ?>)
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
             <?php endif; ?>
 
             <form id="formCheckout" method="POST" action="#">
                 <?= Csrf::inputField() ?>
+
                 <div class="form-grupo">
                     <label for="nombreCompleto">Nombre Completo:</label>
-                    <input type="text" id="nombreCompleto" name="nombreCompleto" class="form-control" required>
+                    <input type="text" id="nombreCompleto" name="nombreCompleto" class="form-control" required value="<?= htmlspecialchars($nombreCompleto) ?>">
                     <span class="error-js-mensaje"></span>
                 </div>
 
@@ -125,23 +145,9 @@ if (isset($_SESSION['usuario'])) {
     </div>
 </main>
 
+<?php include 'includes/footer.php'; ?>
 <script>
-    const BASE_URL = "<?= BASE_URL ?>";
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const direccionGuardada = document.getElementById('direccionGuardada');
-        if (direccionGuardada) {
-            direccionGuardada.addEventListener('change', () => {
-                const valor = direccionGuardada.value;
-                if (valor) {
-                    const [dir, ciudad, cp] = valor.split('|');
-                    document.getElementById('direccionEnvio').value = dir;
-                    document.getElementById('ciudad').value = ciudad;
-                    document.getElementById('codigoPostal').value = cp;
-                }
-            });
-        }
-    });
+  const BASE_URL = "<?= BASE_URL ?>";
 </script>
 <script src="<?= BASE_URL ?>/assets/js/checkout.js"></script>
-<?php include 'includes/footer.php'; ?>

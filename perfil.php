@@ -3,13 +3,18 @@ require_once 'db/db.php';
 require_once 'helpers/Csrf.php';
 include 'includes/header.php';
 
-if (!isset($_SESSION['usuario'])) {
+if (!isset($_SESSION['usuario_id'])) { // Cambiado a usuario_id
     header('Location: ' . BASE_URL . '/auth/login.php?redirect=' . urlencode(BASE_URL . '/perfil.php'));
     exit;
 }
 
+function obtenerGravatar($email, $tamanio = 180) {
+    $hash = md5(strtolower(trim($email)));
+    return "https://www.gravatar.com/avatar/$hash?s=$tamanio&d=identicon";
+}
+
 $stmt = $pdo->prepare("SELECT nombre, email, fecha_registro FROM usuarios WHERE id = ?");
-$stmt->execute([$_SESSION['usuario']]);
+$stmt->execute([$_SESSION['usuario_id']]);  // Cambiado a usuario_id
 $usuario = $stmt->fetch();
 
 // Guardar nombre de usuario en sesión para saludo en admin/index.php si es admin
@@ -21,7 +26,7 @@ if ($usuario) {
 <main class="container">
     <div class="perfil-card">
         <div class="perfil-header">
-            <img src="<?= BASE_URL ?>/assets/images/avatar.png" alt="Avatar Usuario" class="avatar-perfil">
+            <img src="<?= obtenerGravatar($usuario['email']) ?>" alt="Avatar Usuario" class="avatar-perfil">
             <h2><?= htmlspecialchars($usuario['nombre']) ?></h2>
             <p><?= htmlspecialchars($usuario['email']) ?></p>
             <?php if (!empty($usuario['fecha_registro'])): ?>
@@ -37,11 +42,12 @@ if ($usuario) {
                 <li><a href="<?= BASE_URL ?>/direcciones.php">Mis Direcciones</a></li>
                 <li><a href="<?= BASE_URL ?>/detalles_cuenta.php">Detalles de la Cuenta</a></li>
                 <li><a href="<?= BASE_URL ?>/auth/logout.php" class="btn-3 btn-logout">Cerrar Sesión</a></li>
-                <li><a href="<?= BASE_URL ?>/lista_deseos.php">Mi Lista de Deseos</a></li>
-
             </ul>
         </div>
     </div>
 </main>
 
 <?php include 'includes/footer.php'; ?>
+<script>
+ 
+</script>

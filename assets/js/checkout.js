@@ -1,41 +1,54 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const cuerpoTablaCheckout = document.querySelector('#tabla-checkout-carrito tbody');
+    // Cambiado para apuntar al nuevo contenedor de div
+    const checkoutProductosContainer = document.querySelector('#checkout-productos');
     const totalCheckoutElemento = document.getElementById('total-checkout-carrito');
     const formCheckout = document.getElementById('formCheckout');
     const formPago = document.getElementById('formulario-pago');
+    const direccionGuardada = document.getElementById('direccionGuardada');
 
     const carritoGuardado = localStorage.getItem('miTiendaCarrito');
     let carrito = carritoGuardado ? JSON.parse(carritoGuardado) : [];
 
-    function renderCarritoCheckout() {
-        if (!cuerpoTablaCheckout || !totalCheckoutElemento) return;
+  function renderCarritoCheckout() {
+  if (!checkoutProductosContainer || !totalCheckoutElemento) return;
 
-        if (carrito.length === 0) {
-            cuerpoTablaCheckout.innerHTML = '<tr><td colspan="4" style="text-align:center;">No hay productos para procesar.</td></tr>';
-            totalCheckoutElemento.textContent = '$0.00';
-            if (formPago) formPago.style.display = 'none';
-            return;
-        }
+  if (carrito.length === 0) {
+    checkoutProductosContainer.innerHTML = '<div class="checkout-empty-message">No hay productos en el carrito.</div>';
+    totalCheckoutElemento.textContent = '$0.00';
+    if (formPago) formPago.style.display = 'none';
+    return;
+  }
 
-        let total = 0;
-        cuerpoTablaCheckout.innerHTML = ''; // limpia
-        carrito.forEach(prod => {
-            const subtotal = prod.precio * prod.cantidad;
-            total += subtotal;
+  let total = 0;
+  checkoutProductosContainer.innerHTML = ''; // Limpiar contenido previo
 
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${prod.titulo}</td>
-                <td style="text-align:center;">${prod.cantidad}</td>
-                <td style="text-align:right;">$${prod.precio.toFixed(2)}</td>
-                <td style="text-align:right;">$${subtotal.toFixed(2)}</td>
-            `;
-            cuerpoTablaCheckout.appendChild(row);
-        });
+  carrito.forEach(item => {
+    const subtotal = item.precio * item.cantidad;
+    total += subtotal;
 
-        totalCheckoutElemento.textContent = `$${total.toFixed(2)}`;
-        if (formPago) formPago.style.display = 'block';
-    }
+    const productItemDiv = document.createElement('div');
+    productItemDiv.classList.add('checkout-item');
+
+    // HTML del item en el checkout
+    productItemDiv.innerHTML = `
+      <div class="checkout-col-product">
+        <img src="${item.imagen}" alt="${item.titulo}" class="checkout-img">
+        <div class="checkout-info">
+          <p class="checkout-title">${item.titulo}</p>
+        </div>
+      </div>
+      <div class="checkout-col-quantity">${item.cantidad}</div>
+      <div class="checkout-col-price">$${item.precio.toFixed(2)}</div>
+      <div class="checkout-col-subtotal">$${subtotal.toFixed(2)}</div>
+    `;
+
+    checkoutProductosContainer.appendChild(productItemDiv);
+  });
+
+  totalCheckoutElemento.textContent = `$${total.toFixed(2)}`;
+  if (formPago) formPago.style.display = 'block';
+}
+
 
     renderCarritoCheckout();
 
@@ -52,7 +65,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const anio = document.getElementById('anioExp').value.trim();
             const cvc = document.getElementById('cvc').value.trim();
 
-            // Validación mínima
             if (!nombre || !direccion || !ciudad || !codigoPostal || !numeroTarjeta || !mes || !anio || !cvc || carrito.length === 0) {
                 alert('🛑 Completá todos los campos y asegurate de tener productos en el carrito.');
                 return;
@@ -94,7 +106,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 const result = await res.json();
 
                 if (result.status === 'ok') {
-                    alert('🎉 Pedido realizado con éxito. ID: #' + result.pedido_id);
+                    let resumen = carrito.map(p => `🛒 ${p.nombre} x${p.cantidad} - $${(p.precio * p.cantidad).toFixed(2)}`).join('\n');
+                    alert(`🎉 Pedido realizado con éxito. ID: #${result.pedido_id}\n\nResumen:\n${resumen}`);
                     localStorage.removeItem('miTiendaCarrito');
                     window.location.href = BASE_URL + '/pedidos.php?status=exito';
                 } else {
@@ -103,6 +116,18 @@ document.addEventListener('DOMContentLoaded', function () {
             } catch (error) {
                 console.error('Error:', error);
                 alert('⚠️ Error al conectar con el servidor. Intenta de nuevo.');
+            }
+        });
+    }
+
+    if (direccionGuardada) {
+        direccionGuardada.addEventListener('change', () => {
+            const valor = direccionGuardada.value;
+            if (valor) {
+                const [dir, ciudad, cp] = valor.split('|');
+                document.getElementById('direccionEnvio').value = dir;
+                document.getElementById('ciudad').value = ciudad;
+                document.getElementById('codigoPostal').value = cp;
             }
         });
     }

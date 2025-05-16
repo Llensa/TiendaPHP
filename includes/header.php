@@ -22,9 +22,7 @@ $current_page = basename($_SERVER['PHP_SELF']); // Definido al inicio
         echo '<link rel="stylesheet" href="' . BASE_URL . '/assets/css/admin.css">';
     }
   ?>
-   <script>
-    const BASE_URL = "<?= BASE_URL ?>";
-  </script>
+   
 </head>
 <body>
 
@@ -114,7 +112,10 @@ $current_page = basename($_SERVER['PHP_SELF']); // Definido al inicio
         </div>
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>
-        <div class="swiper-pagination"></div>
+        
     </div>
 </section>
 <?php endif; ?>
+
+
+

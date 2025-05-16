@@ -1,34 +1,22 @@
 <?php
 require_once 'db/db.php';
-
-
 include 'includes/header.php';
 
-if (!isset($_SESSION['usuario'])) {
+if (session_status() === PHP_SESSION_NONE) session_start();
+
+if (!isset($_SESSION['usuario_id'])) {
     header('Location: ' . BASE_URL . '/auth/login.php');
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $dir = trim($_POST['calle'] ?? '');
-    $num = trim($_POST['numero'] ?? '');
-    $apar = trim($_POST['apartamento'] ?? '');
-    $ci = trim($_POST['ciudad'] ?? '');
-    $pais = trim($_POST['pais'] ?? '');
-    $prov = trim($_POST['provincia'] ?? '');
-    $cp = trim($_POST['codigo_postal'] ?? '');
-    
-    if ($dir) {
-        $stmt = $pdo->prepare("INSERT INTO direcciones (usuario_id, calle, numero, apartamento, ciudad, pais, provincia, codigo_postal) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$_SESSION['usuario'], $dir,$num, $apar, $ci, $pais, $prov, $cp]);
-        $_SESSION['mensaje_exito'] = "Dirección guardada correctamente.";
-        header("Location: direcciones.php");
-        exit;
-    }
-}
+$usuario_id = $_SESSION['usuario_id'];
 
-$stmt = $pdo->prepare("SELECT * FROM direcciones WHERE usuario_id = ?");
-$stmt->execute([$_SESSION['usuario']]);
+$stmt = $pdo->prepare("
+    SELECT id, calle, numero, apartamento, ciudad, provincia, codigo_postal, pais, es_predeterminada 
+    FROM direcciones 
+    WHERE usuario_id = ?
+");
+$stmt->execute([$usuario_id]);
 $direcciones = $stmt->fetchAll();
 ?>
 
@@ -36,31 +24,72 @@ $direcciones = $stmt->fetchAll();
     <div class="page-card">
         <h2>Mis Direcciones</h2>
 
-        <?php if (!empty($direcciones)): ?>
-            <ul>
-                <?php foreach ($direcciones as $d): ?>
-                    <li><strong><?= htmlspecialchars($d['direccion']) ?></strong>, <?= $d['ciudad'] ?> (<?= $d['codigo_postal'] ?>)</li>
-                <?php endforeach; ?>
-            </ul>
-        <?php else: ?>
-            <p>No tienes direcciones guardadas aún.</p>
-        <?php endif; ?>
+        <div id="lista-direcciones">
+            <?php foreach ($direcciones as $dir): ?>
+                <div class="direccion-card" data-id="<?= $dir['id'] ?>">
+                    <h4>Dirección:</h4>
+                    <p><?= htmlspecialchars($dir['calle']) ?> <?= htmlspecialchars($dir['numero']) ?><?= $dir['apartamento'] ? ', ' . htmlspecialchars($dir['apartamento']) : '' ?></p>
+                    <p><?= htmlspecialchars($dir['ciudad']) ?>, <?= htmlspecialchars($dir['provincia']) ?>, <?= htmlspecialchars($dir['pais']) ?> - CP: <?= htmlspecialchars($dir['codigo_postal']) ?></p>
+                    <?php if (!empty($dir['es_predeterminada'])): ?>
+                        <small><strong>✔ Dirección Predeterminada</strong></small>
+                    <?php endif; ?>
+                    <div class="acciones">
+                        <button class="btn-direccion editar btn-editar-direccion" data-id="<?= $dir['id'] ?>">Editar</button>
+                        <button class="btn-direccion eliminar btn-eliminar-direccion" data-id="<?= $dir['id'] ?>">Eliminar</button>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
 
         <hr>
-        <form method="POST" class="form-autenticacion">
-            <h3>Agregar Dirección</h3>
-            <input type="text" name="direccion" placeholder="Dirección completa" required class="form-control">
-            <input type="text" name="num" placeholder="numero de casa" class="form-control">
-            <input type="text" name="codigo_postal" placeholder="Código Postal" class="form-control">
-            <input type="text" name="apar" placeholder="apartamento(opcional)" class="form-control">
-            <input type="text" name="ci" placeholder="Ciudad" class="form-control">
-            <input type="text" name="Pais" placeholder="Pais" class="form-control">
-            <input type="text" name="Prov" placeholder="Provincia" class="form-control">
-            <input type="text" name="codigo_postal" placeholder="Código Postal" class="form-control">
+        <h3>Agregar / Editar Dirección</h3>
 
-            <button type="submit" class="btn-3">Guardar</button>
+        <form id="form-direccion" class="form-autenticacion">
+            <input type="hidden" name="id" id="direccion-id">
+
+            <div class="form-grupo">
+                <label for="calle">Calle:</label>
+                <input type="text" id="calle" name="calle" required class="form-control">
+            </div>
+            <div class="form-grupo">
+                <label for="num">Número:</label>
+                <input type="text" id="num" name="num" required class="form-control">
+            </div>
+            <div class="form-grupo">
+                <label for="apar">Apartamento (opcional):</label>
+                <input type="text" id="apar" name="apar" class="form-control">
+            </div>
+            <div class="form-grupo">
+                <label for="ci">Ciudad:</label>
+                <input type="text" id="ci" name="ci" required class="form-control">
+            </div>
+            <div class="form-grupo">
+                <label for="prov">Provincia:</label>
+                <input type="text" id="prov" name="prov" required class="form-control">
+            </div>
+            <div class="form-grupo">
+                <label for="codigo_postal">Código Postal:</label>
+                <input type="text" id="codigo_postal" name="codigo_postal" required class="form-control">
+            </div>
+            <div class="form-grupo">
+                <label for="pais_form">País:</label>
+                <input type="text" id="pais_form" name="pais_form" value="Argentina" required class="form-control">
+            </div>
+
+            <div class="form-grupo" style="margin-top: 20px;">
+                <label class="container-button">
+                    <input type="checkbox" id="es_predeterminada" name="es_predeterminada" value="1">
+                    <div class="checkmark"></div>
+                    <span style="margin-left: 100px;">Establecer como dirección predeterminada</span>
+                </label>
+            </div>
+
+            <button type="submit" class="btn-3" style="margin-top: 20px;">Guardar Dirección</button>
         </form>
     </div>
 </main>
 
-<?php include 'includes/footer.php'; ?>
+<?php
+include 'includes/footer.php';
+unset($_SESSION['form_data']); // Limpiar datos del formulario
+?>
