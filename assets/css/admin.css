@@ -94,14 +94,6 @@ body.admin-page { /* Podrías añadir esta clase al body en las páginas de admi
 
 /* Formularios en Admin (heredan de .form-admin de styles.css si esa clase está presente) */
 /* Si quieres estilos específicos para admin que sobreescriban o complementen: */
-.form-admin { /* Esta clase ya está en styles.css, aquí puedes añadir más especificidad */
-    background-color: #250e42; /* Un poco diferente para formularios admin */
-    border: 1px solid #401f5f;
-}
-
-.form-admin h2, .form-admin h3 {
-    color: #c08eff; /* Títulos en admin un poco más brillantes */
-}
 
 
 /* Tabla de productos en admin/productos.php */
@@ -267,4 +259,120 @@ label.sr-only { /* Para accesibilidad si el label no es visible */
   font-size: 0.85em;
   border-radius: 4px;
   margin-left: 5px;
+}
+
+.comentarios-admin-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.comentario-card {
+  background-color: #1e1f25;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 0 1.5px #2b2c37;
+  color: #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.comentario-card:hover {
+  box-shadow: 0 0 10px #936ce0;
+}
+
+.comentario-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #aaa;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.comentario-texto {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #ddd;
+}
+
+.comentario-usuario {
+  font-weight: bold;
+  color: #a972ff;
+}
+
+.comentario-producto {
+  font-weight: bold;
+  color: #ff72ce;
+}
+
+.comentario-fecha {
+  font-size: 0.85rem;
+  color: #888;
+}
+.usuarios-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.usuario-card {
+  background-color: #1e1f25;
+  padding: 20px;
+  border-radius: 12px;
+  color: #e0e0e0;
+  box-shadow: 0 0 0 1.5px #2b2c37;
+  transition: all 0.3s ease;
+}
+
+.usuario-card:hover {
+  box-shadow: 0 0 10px #a972ff;
+}
+
+.usuario-card h3 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: #a972ff;
+}
+
+.usuario-card p {
+  margin: 4px 0;
+}
+
+.usuario-fecha {
+  font-size: 0.85rem;
+  color: #999;
+}
+.pedidos-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.pedido-card {
+  background-color: #1e1f25;
+  padding: 18px;
+  border-radius: 12px;
+  color: #e0e0e0;
+  box-shadow: 0 0 0 1.5px #2b2c37;
+  transition: all 0.3s ease;
+}
+
+.pedido-card:hover {
+  box-shadow: 0 0 10px #a972ff;
+}
+
+.pedido-card h3 {
+  margin-bottom: 8px;
+  color: #72e1ff;
+}
+
+.pedido-card p {
+  margin: 5px 0;
+}
+
+.pedido-fecha {
+  font-size: 0.85rem;
+  color: #999;
 }

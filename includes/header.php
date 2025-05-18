@@ -45,7 +45,7 @@ $current_page = basename($_SERVER['PHP_SELF']); // Definido al inicio
         <?php if (isset($_SESSION['usuario'])): ?>
           <li><a href="<?= BASE_URL ?>/perfil.php">Perfil</a></li>
           <?php if (isset($_SESSION['es_admin']) && $_SESSION['es_admin'] === true): ?>
-            <li><a href="<?= BASE_URL ?>/admin/productos.php">Admin</a></li>
+            <li><a href="<?= BASE_URL ?>/admin/indexAdmin.php">Admin</a></li>
           <?php endif; ?>
           <li><a href="<?= BASE_URL ?>/auth/logout.php">Salir</a></li>
         <?php else: ?>

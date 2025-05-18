@@ -18,24 +18,26 @@ $comentarios = $stmt->fetchAll();
 ?>
 
 <main class="container">
-  <h2>Moderación de Comentarios</h2>
-  <table class="admin-table">
-    <thead>
-      <tr>
-        <th>Usuario</th><th>Producto</th><th>Comentario</th><th>Fecha</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php foreach ($comentarios as $c): ?>
-        <tr>
-          <td><?= $c['usuario'] ?></td>
-          <td><?= $c['producto'] ?></td>
-          <td><?= nl2br(htmlspecialchars($c['contenido'])) ?></td>
-          <td><?= date('d/m/Y H:i', strtotime($c['creado_en'])) ?></td>
-        </tr>
-      <?php endforeach; ?>
-    </tbody>
-  </table>
+    <h2 style="margin-bottom: 25px;">🗨️ Moderación de Comentarios</h2>
+
+    <?php if (empty($comentarios)): ?>
+        <p class="mensaje error">No hay comentarios aún.</p>
+    <?php else: ?>
+        <div class="comentarios-admin-grid">
+            <?php foreach ($comentarios as $c): ?>
+                <div class="comentario-card">
+                    <div class="comentario-header">
+                        <span class="comentario-usuario">👤 <?= htmlspecialchars($c['usuario']) ?></span>
+                        <span class="comentario-producto">🛒 <?= htmlspecialchars($c['producto']) ?></span>
+                        <span class="comentario-fecha"><?= date('d/m/Y H:i', strtotime($c['creado_en'])) ?></span>
+                    </div>
+                    <p class="comentario-texto"><?= nl2br(htmlspecialchars($c['contenido'])) ?></p>
+                    <!-- Si querés opción de borrar -->
+                    <!-- <a href="eliminar_comentario.php?id=<?= $c['id'] ?>" class="btn-3 btn-eliminar" onclick="return confirm('¿Eliminar este comentario?')">Eliminar</a> -->
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
 </main>
 
 <?php include '../includes/footer.php'; ?>
