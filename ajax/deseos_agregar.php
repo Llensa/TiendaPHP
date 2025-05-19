@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-if (!isset($_SESSION['usuario'])) {
+if (!isset($_SESSION['usuario_id'])) {
     echo json_encode(['status' => 'error', 'msg' => 'Iniciá sesión para agregar a deseos']);
     exit;
 }
@@ -23,12 +23,12 @@ if (!$producto_id || $producto_id <= 0) {
 
 // Verificar si ya está en deseos
 $stmt = $pdo->prepare("SELECT 1 FROM lista_deseos WHERE usuario_id = ? AND producto_id = ?");
-$stmt->execute([$_SESSION['usuario'], $producto_id]);
+$stmt->execute([$_SESSION['usuario_id'], $producto_id]);
 
 if ($stmt->fetch()) {
     // Ya está → eliminar
     $pdo->prepare("DELETE FROM lista_deseos WHERE usuario_id = ? AND producto_id = ?")
-        ->execute([$_SESSION['usuario'], $producto_id]);
+        ->execute([$_SESSION['usuario_id'], $producto_id]);
 
     echo json_encode([
         'status' => 'ok',
@@ -40,7 +40,7 @@ if ($stmt->fetch()) {
 
 // Insertar nuevo
 $stmt = $pdo->prepare("INSERT INTO lista_deseos (usuario_id, producto_id) VALUES (?, ?)");
-$stmt->execute([$_SESSION['usuario'], $producto_id]);
+$stmt->execute([$_SESSION['usuario_id'], $producto_id]);
 
 echo json_encode([
     'status' => 'ok',

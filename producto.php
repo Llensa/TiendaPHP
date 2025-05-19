@@ -29,9 +29,9 @@ if (!$producto) {
 
 // Verificar si ya está en deseos (si está logueado)
 $en_deseos = false;
-if (isset($_SESSION['usuario'])) {
+if (isset($_SESSION['usuario_id'])) {
     $stmt = $pdo->prepare("SELECT 1 FROM lista_deseos WHERE usuario_id = ? AND producto_id = ?");
-    $stmt->execute([$_SESSION['usuario'], $producto['id']]);
+    $stmt->execute([$_SESSION['usuario_id'], $producto['id']]);
     $en_deseos = (bool) $stmt->fetch();
 }
 ?>
@@ -65,10 +65,11 @@ if (isset($_SESSION['usuario'])) {
           Agregar al carrito
       </button>
 
-      <?php if (isset($_SESSION['usuario'])): ?>
-        <button class="btn-3 btn-deseo" data-id="<?= $producto['id'] ?>">
-          <?= $en_deseos ? '💔 Eliminar de Deseos' : '🤍 Agregar a Deseos' ?>
-        </button>
+      <?php if (isset($_SESSION['usuario_id'])): ?>
+       <button class="btn-3 btn-deseo btn-agregar-deseo" data-id="<?= $producto['id'] ?>">
+  <?= $en_deseos ? '💔 Eliminar de Deseos' : '🤍 Agregar a Deseos' ?>
+</button>
+
       <?php endif; ?>
 
       <a href="<?= BASE_URL ?>/index.php" class="btn-3 btn-volver" style="margin-top:10px; display:inline-block;">Volver al inicio</a>
@@ -116,7 +117,7 @@ $comentarios = $stmt_comentarios->fetchAll();
         </div>
         <p><?= nl2br(htmlspecialchars($com['contenido'])) ?></p>
 
-        <?php if (isset($_SESSION['usuario']) && ($_SESSION['usuario'] == $com['usuario_id'] || ($_SESSION['es_admin'] ?? false))): ?>
+        <?php if (isset($_SESSION['usuario_id']) && ($_SESSION['usuario_id'] == $com['usuario_id'] || ($_SESSION['es_admin'] ?? false))): ?>
             <div class="comentario-acciones">
                 <a href="<?= BASE_URL ?>/comentarios/editar_comentario.php?id=<?= $com['comentario_id'] ?>&producto_id=<?= $id ?>" class="btn-accion-comentario btn-accion-comentario-editar">Editar</a>
                 <form method="POST" action="<?= BASE_URL ?>/comentarios/eliminar_comentario.php" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este comentario?');">
@@ -131,7 +132,7 @@ $comentarios = $stmt_comentarios->fetchAll();
     <?php endforeach; ?>
   <?php endif; ?>
 
-  <?php if (isset($_SESSION['usuario'])): ?>
+  <?php if (isset($_SESSION['usuario_id'])): ?>
     <form method="POST" action="<?= BASE_URL ?>/comentarios/guardar.php" id="form-comentario" class="form-comentario">
       <?= Csrf::inputField() ?>
       <label for="contenidoComentario" class="sr-only">Tu comentario:</label>

@@ -1,0 +1,118 @@
+.form-container { /* Clase base para .form-autenticacion, .form-admin */
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 25px 30px;
+    background-color: #2a0f4a; /* Fondo de tarjeta oscuro */
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+.form-container h2,
+.form-container h3 {
+    text-align: center;
+    color: aliceblue;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+/* Formulario de autenticación específico (si necesita variaciones de .form-container) */
+.form-autenticacion { /* Hereda de .form-container si se aplica la clase */
+    /* Estilos específicos de .form-autenticacion si los hay además de .form-container */
+}
+/* Formulario de admin específico */
+.form-admin { /* Hereda de .form-container si se aplica la clase */
+   border: none;  /* Estilos específicos de .form-admin si los hay */
+}
+
+.form-grupo {
+    margin-bottom: 20px;
+}
+.form-grupo label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #d0d0d0; /* Color de label tema oscuro general */
+}
+
+/* Estilos unificados para inputs, textareas, selects en tema oscuro */
+.form-control,
+.form-autenticacion input[type="text"],
+.form-autenticacion input[type="email"],
+.form-autenticacion input[type="password"],
+.form-admin input[type="text"],
+.form-admin input[type="number"],
+.form-admin textarea,
+.form-comentario textarea,
+.form-checkout input, /* Para inputs en checkout */
+.form-checkout select, /* Para selects en checkout */
+.form-direccion input, /* Para inputs en form de dirección */
+.form-direccion select { /* Para selects en form de dirección */
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #4a2f6a; /* Borde tema oscuro */
+    border-radius: 5px;
+    background-color: #3a1f5a; /* Fondo tema oscuro */
+    color: #f0f0f0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1em;
+    transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box; /* Asegurar consistencia en padding/border */
+}
+
+.form-control:focus,
+.form-autenticacion input:focus,
+.form-admin input:focus,
+.form-admin textarea:focus,
+.form-comentario textarea:focus,
+.form-checkout input:focus,
+.form-checkout select:focus,
+.form-direccion input:focus,
+.form-direccion select:focus {
+    border-color: #a972ff;
+    background-color: #4a2f6a; /* Ligeramente más claro en focus */
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(169, 114, 255, 0.3);
+}
+
+.form-admin textarea,
+.form-comentario textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-autenticacion .btn-3, /* Botón dentro de form-autenticacion */
+.form-admin .btn-3,
+.form-comentario .btn-3 { /* Botón dentro de form-comentario */
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1em;
+    margin-top: 10px; /* Espacio si el botón está después de inputs */
+}
+.form-autenticacion p {
+    text-align: center;
+    margin-top: 20px;
+}
+.form-autenticacion p a {
+    color: #a972ff;
+    font-weight: 500;
+    text-decoration: underline;
+}
+.form-autenticacion p a:hover {
+    color: #c08eff;
+}
+
+/* Formulario para Añadir/Editar Dirección */
+#form-direccion-container { /* Podría usar .form-container si el estilo es el mismo */
+    background-color: #1f1235; /* Coherente con direccion-card */
+    border: 1px solid #3e2f5b;
+    border-radius: 12px;
+    padding: 25px;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    max-width: 500px; /* Ancho específico */
+    margin: 40px auto; /* Centrado */
+}
+#form-direccion-container h3 {
+    color: #a972ff;
+    margin-bottom: 20px;
+    text-align: center; /* Centrar título del form */
+}

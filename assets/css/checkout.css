@@ -1,0 +1,357 @@
+.checkout-container { /* Layout principal de la página de checkout */
+    display: grid;
+    grid-template-columns: 1.5fr 1fr; /* Formulario a la izquierda, resumen a la derecha */
+    gap: 40px;
+    margin-top: 30px;
+}
+@media (max-width: 991px) { /* Ajuste para que sea una columna en tablet/móvil */
+    .checkout-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Resumen del Carrito en Checkout (Unificado al tema oscuro) */
+
+/* Estilos para el Resumen del Carrito en Checkout */
+#resumen-carrito-checkout {
+    background-color: #1f1235; /* Fondo oscuro consistente con el formulario */
+    padding: 25px; /* Padding generoso */
+    border-radius: 12px; /* Bordes redondeados consistentes */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Sombra consistente */
+    margin-bottom: 30px; /* Más espacio debajo del resumen */
+    color: #eee; /* Texto claro para contraste */
+}
+
+#resumen-carrito-checkout h3 {
+    font-size: 1.6em; /* Tamaño del título */
+    color: #a972ff; /* Color primario para el título */
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #a972ff; /* Línea de separación con color primario */
+    text-align: center; /* Centrar el título */
+}
+
+/* Estructura de items en el resumen del checkout */
+#checkout-productos { /* Contenedor de la lista de productos */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espacio entre items */
+}
+
+.checkout-item-header { /* Cabecera de la lista de productos (Producto, Cant, Subtotal) */
+    display: flex;
+    justify-content: space-between;
+    color: #ccc;
+    font-weight: 600; /* Más énfasis en los encabezados */
+    margin-bottom: 10px;
+    padding: 10px 0; /* Padding para los encabezados */
+    border-bottom: 1px solid rgba(169, 114, 255, 0.4); /* Borde acento sutil */
+    font-size: 0.95em; /* Ligeramente más grande */
+}
+
+.checkout-item { /* Cada fila/item de producto */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0; /* Espacio vertical para cada item */
+    border-bottom: 1px dashed rgba(169, 114, 255, 0.1); /* Línea punteada para separar items */
+}
+
+.checkout-item:last-child {
+    border-bottom: none; /* No hay borde en el último item */
+}
+
+/* Columnas dentro de .checkout-item-header y .checkout-item */
+.checkout-col-product {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espacio entre imagen y texto del producto */
+    min-width: 180px; /* Ancho mínimo para la columna de producto */
+}
+
+.checkout-col-quantity {
+    flex: 0 0 70px; /* Ancho fijo para cantidad */
+    text-align: center;
+}
+
+.checkout-col-price {
+    flex: 0 0 100px; /* Ancho fijo para precio unitario */
+    text-align: right;
+}
+
+.checkout-col-subtotal {
+    flex: 0 0 100px; /* Ancho fijo para subtotal */
+    text-align: right;
+    font-weight: 500;
+}
+
+/* Imagen del producto en el resumen */
+.checkout-img {
+    width: 60px; /* Tamaño optimizado para la imagen */
+    height: 60px;
+    object-fit: cover; /* Recortar si es necesario para llenar el espacio */
+    border-radius: 8px; /* Bordes ligeramente redondeados */
+    background-color: rgba(255,255,255,0.1); /* Fondo sutil si la imagen es transparente */
+    padding: 5px; /* Pequeño padding interno */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra para la imagen */
+}
+
+.checkout-info { /* Contenedor del título y detalles del producto */
+    flex: 1; /* Permite que el texto ocupe el espacio restante */
+}
+
+.checkout-title {
+    font-weight: 500;
+    font-size: 1em;
+    color: #e0e0e0;
+    margin: 0;
+    line-height: 1.3; /* Espaciado entre líneas */
+}
+
+.checkout-detail { /* Para detalles adicionales si se añaden */
+    font-size: 0.85em;
+    color: #b0b0b0;
+    margin: 2px 0;
+}
+
+.checkout-item .checkout-col-subtotal { /* Precio subtotal del item */
+    font-size: 1.05em; /* Ligeramente más grande */
+    color: #a972ff; /* Color acento */
+    font-weight: 600; /* Más énfasis */
+}
+
+.checkout-total { /* Total general del pedido */
+    text-align: right;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #a972ff; /* Borde más sólido para el total */
+    font-size: 1.4em; /* Tamaño destacado */
+    font-weight: 600;
+    color: aliceblue;
+    display: flex; /* Para alinear el texto "Total:" y el valor */
+    justify-content: flex-end; /* Alinear a la derecha */
+    gap: 10px; /* Espacio entre "Total:" y el valor */
+    align-items: baseline; /* Alineación vertical */
+}
+
+.checkout-total span { /* Para el valor numérico del total */
+    color: #a972ff;
+    font-size: 1.2em; /* Más grande para el valor */
+    font-weight: 700;
+}
+
+.checkout-empty-message {
+    text-align: center;
+    color: #aaa;
+    padding: 30px 0; /* Más padding para centrar mejor el mensaje */
+    font-style: italic;
+}
+
+/* Mejoras para la sección de Información de Envío y Pago */
+#formulario-pago h3 {
+    color: aliceblue;
+    margin-bottom: 20px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(169, 114, 255, 0.3);
+    padding-bottom: 10px;
+    text-align: center; /* Centrar el título del formulario */
+}
+
+/* Botón de Pagar */
+.btn-3.btn-1 { /* Usando tu clase existente para el botón de "Realizar Pedido" */
+    width: 100%;
+    background: linear-gradient(135deg, #a972ff, #6c4fd3); /* Degradado atractivo */
+    border: none;
+    padding: 14px 0; /* Más padding para un botón más grande */
+    color: #fff;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease; /* Añadir transform para un efecto sutil */
+    font-size: 1.15em; /* Fuente ligeramente más grande */
+    margin-top: 25px; /* Más espacio superior */
+    letter-spacing: 0.5px; /* Ligeramente más espaciado entre letras */
+}
+
+.btn-3.btn-1:hover {
+    background: linear-gradient(135deg, #b58dff, #7d63eb);
+    transform: translateY(-2px); /* Pequeño efecto de levantamiento al pasar el mouse */
+}
+
+/* Estilo para el botón "Seguir Comprando" (btn-cancelar) */
+.btn-cancelar {
+    background-color: transparent;
+    border: 1px solid #ff8080;
+    color: #ff8080;
+    padding: 12px 25px;
+    border-radius: 8px;
+    display: block; /* Asegura que ocupe todo el ancho si es necesario */
+    text-align: center;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    margin-top: 20px;
+}
+
+.btn-cancelar:hover {
+    background-color: #ff8080;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Media Queries para Responsive Design */
+@media (max-width: 768px) {
+    .checkout-item-header,
+    .checkout-item {
+        flex-wrap: wrap; /* Permite que las columnas se envuelvan */
+        text-align: left; /* Alineación por defecto para pantallas pequeñas */
+    }
+
+    .checkout-col-product {
+        flex: 1 1 100%; /* Ocupa todo el ancho en móviles */
+        margin-bottom: 10px; /* Espacio extra debajo del producto */
+    }
+
+    .checkout-col-quantity,
+    .checkout-col-price,
+    .checkout-col-subtotal {
+        flex: 1 1 auto; /* Ajuste automático del ancho */
+        text-align: left; /* Alineación a la izquierda para mejor lectura */
+        width: 33%; /* Intenta distribuir en 3 columnas si es posible */
+        padding-right: 10px;
+    }
+
+    .checkout-col-subtotal {
+        text-align: right; /* Mantener el subtotal a la derecha */
+        width: 100%; /* Ocupar todo el ancho para el subtotal */
+        margin-top: 5px; /* Espacio superior */
+    }
+
+    #resumen-carrito-checkout h3,
+    #formulario-pago h3 {
+        font-size: 1.4em; /* Reducir tamaño de títulos en móviles */
+    }
+
+    .checkout-img {
+        width: 50px; /* Imágenes más pequeñas en móviles */
+        height: 50px;
+    }
+
+    .checkout-title {
+        font-size: 0.9em;
+    }
+
+    .checkout-detail {
+        font-size: 0.75em;
+    }
+
+    .checkout-total {
+        font-size: 1.2em; /* Reducir tamaño del total en móviles */
+        flex-direction: column; /* Apilar total y valor */
+        align-items: flex-end; /* Alinear a la derecha */
+    }
+
+    .checkout-total span {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .checkout-col-quantity,
+    .checkout-col-price {
+        width: 50%; /* Dos columnas para cantidad y precio en pantallas muy pequeñas */
+        text-align: center;
+    }
+    .checkout-col-product {
+        justify-content: center; /* Centrar producto en pantallas muy pequeñas */
+        text-align: center;
+        flex-direction: column; /* Apilar imagen y texto del producto */
+    }
+    .checkout-info {
+        text-align: center; /* Centrar texto del producto */
+    }
+    .checkout-img {
+        margin-bottom: 5px;
+    }
+}
+/* Estilos para la tabla de resumen del carrito en checkout */
+.styled-table { /* Una tabla genérica estilizada */
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #2a0f4a; /* MISMO FONDO QUE TEMA OSCURO GENERAL */
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.styled-table thead tr {
+    background-color: #a972ff; /* ERROR TIPOGRÁFICO? '2a0f4a#a972ff' no es un color válido. Debería ser solo #a972ff o similar. */
+    color: #a972ff; /* Texto de cabecera de tabla */
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #a972ff; /* Borde de celda */
+}
+
+.styled-table tbody tr:nth-child(even) {
+    background-color: #2a0f4a; /* Filas pares con fondo (igual al fondo de la tabla) */
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #2a0f4a; /* Borde final de la tabla */
+}
+
+.styled-table tfoot td { /* Pie de tabla (si se usa para totales) */
+    font-weight: bold;
+    color: #333; /* COLOR CLARO SOBRE FONDO OSCURO? Contraste bajo. */
+}
+
+/* --- Estos selectores se repiten de la sección 14 con colores diferentes --- */
+.checkout-image-container { /* Contenedor para imagen en checkout */
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+    border-radius: 5px;
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.checkout-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+.checkout-title { /* Título del producto en checkout */
+    font-size: 1em;
+    margin-bottom: 5px;
+    color: #333; /* TEMA CLARO? Esto es para texto oscuro sobre fondo claro. */
+}
+
+.checkout-detail { /* Detalle del producto en checkout */
+    font-size: 0.9em;
+    color: #777; /* TEMA CLARO? */
+    margin-bottom: 2px;
+}
+
+.checkout-subtotal { /* Subtotal en checkout */
+    font-size: 1em;
+    font-weight: bold;
+    color: #555; /* TEMA CLARO? */
+}
+
+/* --- Clases de utilidad --- */
+.text-right {
+    text-align: right !important;
+}
+
+.bold-text {
+    font-weight: bold !important;
+}

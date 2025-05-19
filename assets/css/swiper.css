@@ -1,0 +1,107 @@
+.header-content { /* Slider en index.php */
+    padding: 50px 0;
+    background: linear-gradient(rgba(30, 10, 55, 0.8), rgba(30, 10, 55, 0.8)), url('../images/header-bg.jpg') no-repeat center center/cover; /* Reemplaza 'header-bg.jpg' */
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+}
+.header-info {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    color: aliceblue;
+}
+.header-txt { flex: 1; }
+.header-txt h1 {
+    font-size: 2.8em;
+    font-weight: 700;
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+.precios { display: flex; align-items: baseline; margin: 15px 0 25px 0; }
+.precio-1 { /* Precio original tachado */
+    font-size: 1.5em;
+    color: #b0b0b0;
+    text-decoration: line-through;
+    margin-right: 15px;
+}
+.precio-2 { /* Precio con descuento o actual */
+    font-size: 2em;
+    color: #a972ff;
+    font-weight: 700;
+}
+.header-img { flex: 1; text-align: center; }
+.header-img img { max-width: 100%; width: auto; max-height: 350px; }
+
+/* Swiper Styles Generales */
+.swiper-button-prev,
+.swiper-button-next {
+    color: #a972ff;
+}
+.swiper-button-prev::after,
+.swiper-button-next::after {
+    font-size: 22px;
+    font-weight: bold;
+}
+.swiper-pagination-bullet {
+    background-color: #888;
+}
+.swiper-pagination-bullet-active {
+    background-color: #a972ff;
+}
+
+/* Swiper Hero (Parte 2) */
+.swiper-container { /* Contenedor general si se usa en otros sitios */
+    background-color: #1e082f; /* Ligeramente diferente al body */
+    padding: 20px 0;
+}
+.swiperHero { /* Para el slider principal hero */
+    width: 100%;
+    padding: 60px 0;
+    background: #1a082e; /* Aún más oscuro */
+}
+.swiperHero .swiper-slide-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 20px 10%; /* Ajusta el padding lateral */
+    color: aliceblue; /* Color de texto por defecto para el slide */
+}
+.swiper-slide-texto h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    /* color: white; (heredado de .swiper-slide-inner) */
+    margin-bottom: 10px;
+}
+.swiper-slide-texto p {
+    /* color: white; (heredado) */
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+.swiper-slide-texto a.btn-3 { /* Si usas btn-3 aquí */
+    padding: 10px 20px; /* Asegurar padding si es diferente */
+    /* Estilos adicionales si es necesario */
+}
+.swiper-slide-imagen img {
+    max-height: 300px;
+    width: auto;
+    display: block; /* Para centrar con margin auto si es necesario */
+    margin: 0 auto; /* Centrar imagen si el contenedor es más ancho */
+}
+/* slider-content (Parece otra variación de slide, unificar con swiperHero si es posible) */
+.slider-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 40px; /* Podría ser igual que .swiper-slide-inner */
+    color: aliceblue;
+}
+.slider-info { max-width: 45%; }
+.slider-img img {
+    max-height: 300px;
+    object-fit: contain;
+    display: block;
+    margin: auto;
+}

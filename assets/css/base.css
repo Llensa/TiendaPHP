@@ -1,0 +1,33 @@
+/* base.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+    background-color: #1e0a37; /* Morado oscuro base */
+    font-family: 'Poppins', sans-serif;
+    color: #f0f0f0; /* Color de texto base claro */
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}

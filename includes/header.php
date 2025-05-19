@@ -15,7 +15,25 @@ $current_page = basename($_SERVER['PHP_SELF']);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tienda de Auriculares</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-  <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/base.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/layout.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/header.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/productos.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/carrito.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/botones.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/formularios.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/tarjetas.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/swiper.css">
+    
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/producto-detalle.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/comentarios.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/deseos.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/pedidos.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/checkout.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/mensajes.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/footer.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/animaciones.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/responsive.css">
   <?php
     // Cargar admin.css solo en páginas de admin
     if (isset($_SESSION['es_admin']) && $_SESSION['es_admin'] === true && strpos($_SERVER['REQUEST_URI'], '/admin/') !== false) {
@@ -24,6 +42,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
   ?>
    <script>
     const BASE_URL = "<?= BASE_URL ?>";
+  </script>
+  <script>
+  const LAZY_CONFIG = {
+    BASE_URL: "<?= BASE_URL ?>",
+    TOTAL_PRODUCTOS: <?= $total_productos ?>
+  };
   </script>
 </head>
 <body>

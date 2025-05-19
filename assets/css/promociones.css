@@ -1,0 +1,44 @@
+.promos, .products {
+    padding: 40px 0;
+    text-align: center;
+}
+.promos h2, .products h2 {
+    font-size: 2.5em;
+    color: aliceblue;
+    margin-bottom: 40px;
+    font-weight: 700;
+}
+
+/* Promociones (categories) */
+.categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+    gap: 30px;
+    text-align: left;
+}
+.categorie { /* Tarjeta de promoción */
+    display: flex;
+    align-items: center;
+    background-color: #2a0f4a;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    gap: 20px;
+}
+.categorie-1 { flex: 2; }
+.categorie-1 h3 {
+    font-size: 1.6em;
+    color: aliceblue;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+.categorie-1 .precios .precio-2 { /* Precio en promoción */
+    font-size: 1.8em;
+}
+.categorie-img { flex: 1; text-align: center; }
+.categorie-img img {
+    max-width: 100%;
+    height: auto;
+    max-height: 150px;
+    border-radius: 5px;
+}

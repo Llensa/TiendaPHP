@@ -30,6 +30,7 @@
     max-width: 100%;
     height: auto;
     margin-bottom: 10px;
+    align-content: center;
   }
   
   .product h3, .product p {

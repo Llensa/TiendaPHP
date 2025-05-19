@@ -1,0 +1,38 @@
+#comentarios {
+    margin-top: 40px;
+}
+#comentarios h3 {
+    font-size: 1.8em;
+    color: aliceblue;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #a972ff;
+    padding-bottom: 10px;
+    display: inline-block;
+}
+.comentario-item { /* Muy similar a .pedido-item de Parte 2 */
+    background-color: #2a0f4a; /* Fondo diferente de pedido-item (#3a1f5a) */
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #a972ff;
+}
+.comentario-item strong { /* Usuario */
+    color: #e0e0e0;
+    font-size: 1.1em;
+    margin-bottom: 3px;
+    display: block;
+}
+.comentario-item small { /* Fecha */
+    color: #aaa;
+    font-size: 0.85em;
+    margin-bottom: 8px;
+    display: block;
+}
+.comentario-item p { /* Texto del comentario */
+    color: #d0d0d0;
+    line-height: 1.6;
+}
+#comentarios p a { /* Enlace para iniciar sesión para comentar */
+    color: #a972ff;
+    text-decoration: underline;
+}

@@ -1,0 +1,42 @@
+.product-detail-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 30px;
+}
+.product-image-container {
+    flex: 1 1 350px;
+    max-width: 450px;
+}
+.product-detail-image {
+    width: 100%;
+    border-radius: 10px;
+    background-color: #2a0f4a;
+    padding: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+.product-detail-info {
+    flex: 2 1 400px;
+}
+.product-detail-info h2 {
+    font-size: 2.2em;
+    margin-bottom: 15px;
+    color: aliceblue;
+}
+.product-detail-info p { /* Descripción larga */
+    font-size: 1em;
+    line-height: 1.7;
+    margin-bottom: 15px;
+    color: #d0d0d0;
+}
+.product-detail-info .precio { /* Precio en página de detalle */
+    font-size: 2em; /* Puede ser igual a .precio-2 global */
+    color: #a972ff;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+.product-detail-info .btn-3 { /* Botón en página de detalle */
+    margin-top: 10px;
+    padding: 12px 25px; /* Ligeramente más grande que el .btn-3 base */
+    font-size: 1em;
+}

@@ -1,0 +1,388 @@
+/* Productos */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+.product { /* Tarjeta de producto individual */
+    background-color: #2a0f4a;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+.product img {
+  width: 100%;
+  height: 200px;
+  object-fit: contain; /* Muestra toda la imagen sin recortarla */
+  background-color: rgba(255,255,255,0.05);
+  padding: 10px; /* Espacio interior para que no se vean pegadas */
+  border-radius: 12px;
+}
+
+.product-txt {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.product-txt h3 {
+    font-size: 1.3em;
+    color: aliceblue;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+.product-txt .descripcion-corta {
+    font-size: 0.9em;
+    color: #c0c0c0;
+    margin-bottom: 10px;
+    min-height: 40px;
+    line-height: 1.4;
+}
+.product-txt .precio { /* Precio del producto en tarjeta */
+    font-size: 1.5em;
+    color: #a972ff;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+/* Estilos de precios con descuento (si se usan en tarjetas de producto) */
+.precio-original { /* Usado en Parte 2, podría ser .precio-1 de Parte 1 */
+    text-decoration: line-through;
+    color: #888; /* Diferente de .precio-1 que usa #b0b0b0 */
+    margin-right: 8px;
+    font-size: 0.9em; /* Para diferenciarlo del precio principal */
+}
+.precio-descuento { /* Usado en Parte 2, podría ser .precio-2 de Parte 1 */
+    color: #bb86fc; /* Un violeta diferente, #a972ff es el principal */
+    font-weight: bold;
+}
+.etiqueta-descuento {
+    background-color: #bb86fc; /* Mismo color que .precio-descuento */
+    color: #fff;
+    font-size: 0.8rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+}
+
+/* --- FORMULARIO DE FILTROS --- */
+.filtro-form {
+  margin-bottom: 30px; /* Contenedor principal del formulario de filtros */
+}
+
+.filtro-group { /* Agrupador para los elementos del filtro (input, select, botón) */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+.group { /* Un grupo específico dentro del filtro, probablemente para el input de búsqueda */
+  display: flex;
+  align-items: center;
+  position: relative;
+  line-height: 28px;
+}
+
+.group .input { /* Input de búsqueda dentro de .group */
+  font-family: "Poppins", sans-serif;
+  width: 190px;
+  height: 45px;
+  padding-left: 2.5rem; /* Espacio para el icono */
+  border: 0;
+  border-radius: 12px;
+  background-color: var(--input-bg, #16171d); /* Fondo oscuro para input */
+  color: var(--input-text, #bdbecb); /* Texto claro */
+  box-shadow: 0 0 0 1.5px var(--input-border, #2b2c37), 0 0 25px -17px #000;
+  transition: all 0.25s ease;
+}
+
+.group .input::placeholder {
+  color: var(--input-placeholder, #bdbecb);
+}
+
+.group .input:hover {
+  box-shadow: 0 0 0 2px var(--input-border-hover, #2f303d), 0 0 25px -15px #000;
+}
+
+.group .input:focus {
+  box-shadow: 0 0 0 2px var(--input-border-hover, #2f303d);
+  outline: none;
+}
+
+.group .input:active {
+  transform: scale(0.98);
+}
+
+.group .search-icon { /* Icono de lupa dentro del input de búsqueda */
+  position: absolute;
+  left: 1rem;
+  fill: var(--input-placeholder, #bdbecb);
+  width: 1rem;
+  height: 1rem;
+  pointer-events: none;
+}
+
+/* Estilo del select para ordenar, similar al input de búsqueda */
+.select-orden {
+  appearance: none; /* Quita la apariencia por defecto del select */
+  background-repeat: no-repeat;
+  background-position: right 10px center; /* Para una flecha personalizada si se añade con background-image */
+  padding-right: 2rem; /* Espacio para la flecha */
+  cursor: pointer;
+  /* Hereda muchos estilos de los inputs generales o necesita definirlos (bg, color, border-radius, etc.) */
+  /* Los estilos definidos más abajo para .select-orden son más completos */
+}
+
+/* Botón para aplicar filtro */
+.btn-filtrar {
+  height: 45px;
+  padding: 0 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  background-color: var(--accent); /* Usa una variable CSS para el color de acento */
+  color: #fff;
+  border: 2px solid var(--accent);
+  transition: background-color 0.3s ease;
+}
+
+.btn-filtrar:hover {
+  background-color: var(--accent-hover, #936ce0); /* Color hover, con fallback */
+}
+
+/* RESPONSIVE PARA FILTROS */
+@media (max-width: 520px) {
+  .filtro-group {
+    flex-direction: column; /* Apila los elementos del filtro */
+    align-items: stretch; /* Estira los elementos al ancho completo */
+  }
+}
+
+/* Otra estructura de filtros, quizás una alternativa o un refinamiento */
+.product-filters { /* Contenedor general para la fila de filtros */
+  margin: 30px 0;
+  display: flex;
+  justify-content: center; /* Centra la fila de filtros */
+}
+
+.filter-row { /* La fila que contiene el input de búsqueda y el select de orden */
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  background-color: #16171d; /* Fondo oscuro para la barra de filtros */
+  padding: 12px 18px;
+  border-radius: 15px;
+  box-shadow: 0 0 0 1.5px #2b2c37;
+  max-width: 600px;
+  width: 100%;
+}
+
+.input-group { /* Contenedor para el input de búsqueda y su icono */
+  position: relative;
+  flex: 1; /* Para que ocupe el espacio disponible */
+}
+
+.input-search { /* Input de búsqueda dentro de .filter-row */
+  font-family: 'Poppins', sans-serif;
+  width: 100%;
+  height: 40px;
+  padding-left: 2.5rem; /* Espacio para el icono */
+  border: none;
+  border-radius: 12px;
+  background-color: #1e1f25; /* Fondo del input */
+  color: #e0e0e0; /* Color del texto */
+  outline: none;
+  font-size: 0.95em;
+  transition: all 0.3s ease;
+}
+
+.input-search::placeholder {
+  color: #999;
+}
+
+.search-icon { /* Icono de lupa para .input-search (repetido de .group .search-icon) */
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  fill: #aaa;
+  width: 1rem;
+  height: 1rem;
+  pointer-events: none;
+}
+
+.select-orden { /* Select para ordenar productos (estilos más completos aquí) */
+  background-color: #2a2b35; /* Fondo oscuro para el select */
+  color: #f0f0f0; /* Texto claro */
+  border: none;
+  border-radius: 12px;
+  padding: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95em;
+  outline: none;
+  /* Debería tener appearance: none; y una flecha personalizada si se quiere consistencia total */
+}
+/* --- FORMULARIO DE FILTROS --- */
+.filtro-form {
+  margin-bottom: 30px; /* Contenedor principal del formulario de filtros */
+}
+
+.filtro-group { /* Agrupador para los elementos del filtro (input, select, botón) */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+.group { /* Un grupo específico dentro del filtro, probablemente para el input de búsqueda */
+  display: flex;
+  align-items: center;
+  position: relative;
+  line-height: 28px;
+}
+
+.group .input { /* Input de búsqueda dentro de .group */
+  font-family: "Poppins", sans-serif;
+  width: 190px;
+  height: 45px;
+  padding-left: 2.5rem; /* Espacio para el icono */
+  border: 0;
+  border-radius: 12px;
+  background-color: var(--input-bg, #16171d); /* Fondo oscuro para input */
+  color: var(--input-text, #bdbecb); /* Texto claro */
+  box-shadow: 0 0 0 1.5px var(--input-border, #2b2c37), 0 0 25px -17px #000;
+  transition: all 0.25s ease;
+}
+
+.group .input::placeholder {
+  color: var(--input-placeholder, #bdbecb);
+}
+
+.group .input:hover {
+  box-shadow: 0 0 0 2px var(--input-border-hover, #2f303d), 0 0 25px -15px #000;
+}
+
+.group .input:focus {
+  box-shadow: 0 0 0 2px var(--input-border-hover, #2f303d);
+  outline: none;
+}
+
+.group .input:active {
+  transform: scale(0.98);
+}
+
+.group .search-icon { /* Icono de lupa dentro del input de búsqueda */
+  position: absolute;
+  left: 1rem;
+  fill: var(--input-placeholder, #bdbecb);
+  width: 1rem;
+  height: 1rem;
+  pointer-events: none;
+}
+
+/* Estilo del select para ordenar, similar al input de búsqueda */
+.select-orden {
+  appearance: none; /* Quita la apariencia por defecto del select */
+  background-repeat: no-repeat;
+  background-position: right 10px center; /* Para una flecha personalizada si se añade con background-image */
+  padding-right: 2rem; /* Espacio para la flecha */
+  cursor: pointer;
+  /* Hereda muchos estilos de los inputs generales o necesita definirlos (bg, color, border-radius, etc.) */
+  /* Los estilos definidos más abajo para .select-orden son más completos */
+}
+
+/* Botón para aplicar filtro */
+.btn-filtrar {
+  height: 45px;
+  padding: 0 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  background-color: var(--accent); /* Usa una variable CSS para el color de acento */
+  color: #fff;
+  border: 2px solid var(--accent);
+  transition: background-color 0.3s ease;
+}
+
+.btn-filtrar:hover {
+  background-color: var(--accent-hover, #936ce0); /* Color hover, con fallback */
+}
+
+/* RESPONSIVE PARA FILTROS */
+@media (max-width: 520px) {
+  .filtro-group {
+    flex-direction: column; /* Apila los elementos del filtro */
+    align-items: stretch; /* Estira los elementos al ancho completo */
+  }
+}
+
+/* Otra estructura de filtros, quizás una alternativa o un refinamiento */
+.product-filters { /* Contenedor general para la fila de filtros */
+  margin: 30px 0;
+  display: flex;
+  justify-content: center; /* Centra la fila de filtros */
+}
+
+.filter-row { /* La fila que contiene el input de búsqueda y el select de orden */
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  background-color: #16171d; /* Fondo oscuro para la barra de filtros */
+  padding: 12px 18px;
+  border-radius: 15px;
+  box-shadow: 0 0 0 1.5px #2b2c37;
+  max-width: 600px;
+  width: 100%;
+}
+
+.input-group { /* Contenedor para el input de búsqueda y su icono */
+  position: relative;
+  flex: 1; /* Para que ocupe el espacio disponible */
+}
+
+.input-search { /* Input de búsqueda dentro de .filter-row */
+  font-family: 'Poppins', sans-serif;
+  width: 100%;
+  height: 40px;
+  padding-left: 2.5rem; /* Espacio para el icono */
+  border: none;
+  border-radius: 12px;
+  background-color: #1e1f25; /* Fondo del input */
+  color: #e0e0e0; /* Color del texto */
+  outline: none;
+  font-size: 0.95em;
+  transition: all 0.3s ease;
+}
+
+.input-search::placeholder {
+  color: #999;
+}
+
+.search-icon { /* Icono de lupa para .input-search (repetido de .group .search-icon) */
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  fill: #aaa;
+  width: 1rem;
+  height: 1rem;
+  pointer-events: none;
+}
+
+.select-orden { /* Select para ordenar productos (estilos más completos aquí) */
+  background-color: #2a2b35; /* Fondo oscuro para el select */
+  color: #f0f0f0; /* Texto claro */
+  border: none;
+  border-radius: 12px;
+  padding: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95em;
+  outline: none;
+  /* Debería tener appearance: none; y una flecha personalizada si se quiere consistencia total */
+}

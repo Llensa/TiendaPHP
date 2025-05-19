@@ -26,20 +26,26 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 <script src="<?= BASE_URL ?>/assets/js/script.js"></script>
 <script src="<?= BASE_URL ?>/assets/js/validaciones.js"></script>
+<?php if (isset($_SESSION['usuario_id'])): ?> 
+  <script src="<?= BASE_URL ?>/assets/js/deseos.js"></script>
+  
+<?php endif; ?>
+<script>
+  const LAZY_CONFIG = {
+    BASE_URL: "<?= BASE_URL ?>",
+    TOTAL_PRODUCTOS: <?= $total_productos ?>
+  };
+  <script src="<?= BASE_URL ?>/assets/js/lazyload.js"></script>
+</script>
+
+
+
 <?php
      $current_page_admin = basename($_SERVER['PHP_SELF']);
      if (isset($_SESSION['es_admin']) && $_SESSION['es_admin'] === true && ($current_page_admin === 'productos.php' || $current_page_admin === 'editar.php')) {
          echo '<script src="' . BASE_URL . '/assets/js/dragdrop.js"></script>';
      }
 ?>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<?php if (isset($_SESSION['usuario'])): ?>
-    <script src="<?= BASE_URL ?>/assets/js/deseos.js"></script>
-<?php endif; ?>
-
-
-
-
 
 </body>
 </html>

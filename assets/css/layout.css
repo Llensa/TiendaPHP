@@ -1,0 +1,15 @@
+/* layout.css */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+hr.separator-line {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(169, 114, 255, 0), rgba(169, 114, 255, 0.5), rgba(169, 114, 255, 0));
+    margin: 40px 0;
+}
+

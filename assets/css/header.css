@@ -1,0 +1,258 @@
+    .menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+}
+
+.navbar ul {
+  display: flex;
+  gap: 20px;
+}
+
+.navbar ul li a {
+  padding: 10px 15px;
+  font-weight: 500;
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.menu-icono-label {
+  display: none;
+  cursor: pointer;
+}
+
+.menu-icono {
+  height: 28px;
+  width: auto;
+}
+
+/* 📱 MOBILE RESPONSIVE NAV */
+@media (max-width: 991px) {
+  .menu-icono-label {
+    display: block;
+  }
+
+  .navbar {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--background-dark, #2a0f4a);
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+  }
+
+  #menu-toggle:checked ~ .navbar {
+    display: flex;
+  }
+
+  .navbar ul {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .navbar ul li a {
+    width: 100%;
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+}
+
+   .header { /* Unificado .header y .header-top */
+    background-color: #2a0f4a;
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo img {
+    height: 40px;
+    vertical-align: middle;
+}
+
+.menu .navbar ul {
+    display: flex;
+}
+
+.menu .navbar ul li a {
+    font-size: 17px;
+    padding: 15px;
+    color: aliceblue;
+    display: block;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.menu .navbar ul li a:hover {
+    color: #a972ff;
+}
+
+#menu-toggle {
+    display: none;
+}
+
+.menu-icono-label {
+    cursor: pointer;
+    display: none; /* Se muestra en mobile */
+}
+
+.menu-icono {
+    width: 25px;
+    height: auto;
+    vertical-align: middle;
+}
+
+/* ==========================================================================
+   4. SUBMENU CARRITO
+   ========================================================================== */
+.submenu-container {
+    position: relative;
+}
+
+.submenu-container ul {
+    padding-left: 0;
+}
+
+.submenu #icono-carrito {
+    cursor: pointer;
+    width: 28px;
+    vertical-align: middle;
+}
+
+.submenu #dropdown-carrito {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    z-index: 1001;
+    background-color: rgba(40, 15, 70, 0.95); /* #280f46 con transparencia */
+    backdrop-filter: blur(8px);
+    padding: 20px;
+    min-width: 380px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    color: #e0e0e0;
+}
+
+.submenu #dropdown-carrito.visible {
+    display: block;
+}
+
+#tabla-lista-carrito {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+#tabla-lista-carrito th,
+#tabla-lista-carrito td {
+    color: #e0e0e0;
+    padding: 10px 8px;
+    text-align: left;
+    border-bottom: 1px solid rgba(169, 114, 255, 0.3);
+}
+
+#tabla-lista-carrito img {
+    width: 60px; /* Usado también por .mini-img */
+    border-radius: 4px;
+}
+
+#tabla-lista-carrito td:last-child,
+#tabla-lista-carrito th:last-child {
+    text-align: center;
+}
+
+.borrar-item-carrito {
+    color: #ff8080;
+    font-weight: bold;
+    font-size: 1.3em;
+    transition: color 0.2s;
+}
+
+.borrar-item-carrito:hover {
+    color: #ff4d4d;
+}
+
+.btn-cantidad-carrito {
+    background: #7c52cc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 3px 7px;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin: 0 4px;
+}
+
+.btn-cantidad-carrito:hover {
+    background: #936ce0;
+}
+
+.total-carrito-p {
+    text-align: right;
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #f0f0f0;
+}
+
+.carrito-botones {
+    display: flex;
+    justify-content: space-between;
+}
+
+.carrito-botones .btn-3 { /* btn-3 se define más abajo, aquí se especializa */
+    flex-grow: 1;
+    text-align: center;
+    margin: 0 5px;
+}
+
+.carrito-botones .btn-3.vaciar {
+    border-color: #ff8080;
+    color: #ff8080;
+}
+.carrito-botones .btn-3.vaciar:hover {
+    background-color: #ff8080;
+    color: white;
+}
+
+.carrito-botones .btn-3.pagar {
+    background-color: #7c52cc;
+    border-color: #7c52cc;
+    color: white;
+}
+.carrito-botones .btn-3.pagar:hover {
+    background-color: #936ce0;
+}
+
+.contador-items-carrito {
+    background-color: #a972ff;
+    color: white;
+    border-radius: 50%;
+    padding: 1px 5px;
+    font-size: 0.7em;
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    display: none; /* JS lo muestra */
+    align-items: center;
+    justify-content: center;
+    min-width: 16px;
+    height: 16px;
+    line-height: 1;
+    font-weight: bold;
+}

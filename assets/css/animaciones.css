@@ -1,0 +1,128 @@
+/* animaciones.css */
+.fade-in {
+  animation: fadeIn 0.8s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+/* --- MENÚ DESPLEGABLE CON CHECKBOX HACK Y ANIMACIONES --- */
+.event-wrapper > .event-wrapper-inp { /* El checkbox real, oculto */
+  display: none;
+}
+.event-wrapper { /* El contenedor del "botón" que activa el dropdown y el icono de barras */
+  font-weight: 500;
+  color: white;
+  background-color: var(--accent, #7c52cc); /* Color de acento */
+  padding: 3px 15px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  height: 2.5rem;
+  width: fit-content;
+  position: relative;
+  cursor: pointer;
+  justify-content: space-between;
+}
+
+.menu-container { /* El contenedor del menú que se despliega */
+  background-color: white; /* Fondo blanco para el menú */
+  color: #7c52cc; /* Texto del color de acento */
+  border-radius: 10px;
+  position: absolute;
+  width: 250px;
+  left: -100px; /* Posicionamiento (puede necesitar ajuste) */
+  top: 130%;
+  overflow: hidden;
+  clip-path: inset(0% 0% 0% 0% round 10px); /* Para la animación de "revelar" */
+  transition: all 0.4s;
+  z-index: 999; /* Para que esté sobre otros elementos */
+}
+
+.menu-list { /* Cada item dentro del menú desplegable */
+  --delay: 0.4s; /* Variables CSS para controlar delays de animación */
+  --trdelay: 0.15s;
+  padding: 8px 10px;
+  border-radius: inherit;
+  transition: background-color 0.2s 0s;
+  position: relative;
+  transform: translateY(30px); /* Posición inicial para animación de entrada */
+  opacity: 0; /* Opacidad inicial para animación de entrada */
+}
+.menu-list a { /* Enlaces dentro de los items del menú */
+  text-decoration: none;
+  color: inherit; /* Hereda el color de .menu-container */
+  display: block;
+}
+.menu-list:hover {
+  background-color: rgb(223, 223, 223); /* Color de fondo al pasar el mouse */
+}
+
+/* --- Animaciones del menú desplegable basadas en el estado del checkbox --- */
+.event-wrapper-inp:checked ~ .menu-container { /* Cuando el checkbox está activo (menú "cerrándose") */
+  clip-path: inset(10% 50% 90% 50% round 10px); /* Animación de "encoger" */
+}
+
+.event-wrapper-inp:not(:checked) ~ .menu-container .menu-list { /* Cuando el checkbox NO está activo (menú "abriéndose" o visible) */
+  transform: translateY(0); /* Vuelve a su posición normal */
+  opacity: 1; /* Se hace visible */
+}
+
+/* Transiciones escalonadas para cada item del menú al abrirse */
+.event-wrapper-inp:not(:checked) ~ .menu-container .menu-list:nth-child(1) {
+  transition: transform 0.4s var(--delay), opacity 0.4s var(--delay);
+}
+.event-wrapper-inp:not(:checked) ~ .menu-container .menu-list:nth-child(2) {
+  transition: transform 0.4s calc(var(--delay) + 0.15s), opacity 0.4s calc(var(--delay) + 0.15s);
+}
+.event-wrapper-inp:not(:checked) ~ .menu-container .menu-list:nth-child(3) {
+  transition: transform 0.4s calc(var(--delay) + 0.3s), opacity 0.4s calc(var(--delay) + 0.3s);
+}
+.event-wrapper-inp:not(:checked) ~ .menu-container .menu-list:nth-child(4) {
+  transition: transform 0.4s calc(var(--delay) + 0.45s), opacity 0.4s calc(var(--delay) + 0.45s);
+}
+
+/* --- Icono de Barras (Hamburguesa) y su transformación a "X" --- */
+.bar { /* Contenedor de las 3 barras del icono */
+  display: flex;
+  height: 50%;
+  width: 20px;
+  flex-direction: column;
+  gap: 3px; /* Espacio entre barras */
+}
+
+.bar-list { /* Cada una de las 3 barras */
+  display: block;
+  width: 100%;
+  height: 3px;
+  border-radius: 50px;
+  background-color: white;
+  transition: all 0.4s;
+  position: relative;
+}
+
+/* Transformación de las barras a una "X" cuando el menú está visible/abierto */
+.event-wrapper-inp:not(:checked) ~ .bar > .top { /* Barra superior */
+  transform-origin: top right;
+  transform: translateY(-25%) rotate(-45deg);
+}
+.event-wrapper-inp:not(:checked) ~ .bar > .middle { /* Barra del medio */
+  transform: translateX(-50%);
+  opacity: 0; /* Desaparece */
+}
+.event-wrapper-inp:not(:checked) ~ .bar > .bottom { /* Barra inferior */
+  transform-origin: bottom right;
+  transform: translateY(25%) rotate(45deg);
+}

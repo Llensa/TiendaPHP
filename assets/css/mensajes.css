@@ -1,0 +1,44 @@
+.mensaje {
+    padding: 12px 18px;
+    margin: 20px 0;
+    border-radius: 5px;
+    border: 1px solid transparent;
+}
+.mensaje.exito {
+    color: #d1e7dd;
+    background-color: #0f5132;
+    border-color: #198754;
+}
+.mensaje.error { /* Para errores de PHP/Servidor */
+    color: #f8d7da;
+    background-color: #842029;
+    border-color: #dc3545;
+}
+
+/* Mensajes de error para validación JS (Unificado) */
+.error-js-mensaje {
+    display: none; /* Oculto por defecto, JS lo muestra */
+    color: #e63946; /* Rojo vivo para errores JS */
+    font-size: 0.85em;
+    margin-top: 5px;
+    /* margin-bottom: 10px; (opcional si hay múltiples bajo un campo) */
+    padding-left: 2px; /* Pequeño padding si es necesario */
+}
+input.input-error, textarea.input-error, select.input-error { /* Para campos con error JS */
+    border-color: #e63946 !important; /* Asegurar visibilidad */
+    box-shadow: 0 0 0 1px #e63946 !important; /* Contorno sutil */
+}
+
+/* Para errores de formulario PHP (si se usa fuera de .mensaje.error) */
+.errores-formulario {
+    background-color: rgba(132, 32, 41, 0.8); /* #842029 con más opacidad */
+    border: 1px solid #dc3545;
+    color: #f8d7da;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+.errores-formulario .error-mensaje {
+    margin: 5px 0;
+    font-size: 0.9em;
+}

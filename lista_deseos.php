@@ -13,7 +13,7 @@ $stmt = $pdo->prepare("
     JOIN productos p ON d.producto_id = p.id 
     WHERE d.usuario_id = ?
 ");
-$stmt->execute([$_SESSION['usuario']]);
+$stmt->execute([$_SESSION['usuario_id']]);
 $deseos = $stmt->fetchAll();
 ?>
 
@@ -28,7 +28,7 @@ $deseos = $stmt->fetchAll();
     <?php else: ?>
         <div class="grid wishlist-grid">
             <?php foreach ($deseos as $p): ?>
-                <div class="wishlist-item">
+                <div class="wishlist-item" data-id="<?= $p['id'] ?>">
                     <div class="wishlist-img">
                         <img src="<?= BASE_URL ?>/assets/images/<?= htmlspecialchars($p['imagen']) ?>" alt="<?= htmlspecialchars($p['nombre']) ?>">
                     </div>
@@ -36,6 +36,7 @@ $deseos = $stmt->fetchAll();
                         <h3><?= htmlspecialchars($p['nombre']) ?></h3>
                         <p class="precio">$<?= number_format($p['precio'], 2, ',', '.') ?></p>
                         <a href="<?= BASE_URL ?>/producto.php?id=<?= $p['id'] ?>" class="btn-3 btn-sm">Ver producto</a>
+                        <button class="btn-3 btn-sm btn-deseo btn-agregar-deseo" data-id="<?= $p['id'] ?>">💔 Quitar</button>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -46,4 +47,5 @@ $deseos = $stmt->fetchAll();
   </div>
 </main>
 
+<script src="<?= BASE_URL ?>/assets/js/deseos.js"></script>
 <?php include 'includes/footer.php'; ?>

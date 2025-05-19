@@ -3,7 +3,14 @@ require_once 'db/db.php';
 include 'includes/header.php';
 
 // Productos normales
-$stmt = $pdo->query("SELECT * FROM productos ORDER BY id DESC LIMIT 8");
+$por_pagina = 12;
+$pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+$inicio = ($pagina - 1) * $por_pagina;
+
+$stmt = $pdo->prepare("SELECT * FROM productos ORDER BY id DESC LIMIT ?, ?");
+$stmt->bindValue(1, $inicio, PDO::PARAM_INT);
+$stmt->bindValue(2, $por_pagina, PDO::PARAM_INT);
+$stmt->execute();
 $productos = $stmt->fetchAll();
 
 // Productos en promoción para el slider
