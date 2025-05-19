@@ -2,7 +2,7 @@
 require_once '../db/db.php';
 include '../includes/header.php';
 
-if (!isset($_SESSION['usuario']) || $_SESSION['es_admin'] !== true) {
+if (!isset($_SESSION['usuario_id']) || $_SESSION['es_admin'] !== true) {
     header('Location: ' . BASE_URL . '/auth/login.php');
     exit;
 }
@@ -12,7 +12,8 @@ $usuarios = $pdo->query("SELECT id, nombre, email, rol, fecha_registro FROM usua
 
 <main class="container">
     <h2>👥 Gestión de Usuarios</h2>
-
+     <a href="<?= BASE_URL ?>/admin/indexAdmin.php" class="btn-3" style="margin-top:20px;">Volver a administracion</a>
+    <hr class="separator-line">
     <?php if (empty($usuarios)): ?>
         <p class="mensaje error">No hay usuarios registrados aún.</p>
     <?php else: ?>

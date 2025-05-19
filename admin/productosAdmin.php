@@ -3,7 +3,7 @@ require_once '../db/db.php';
 require_once '../helpers/Csrf.php';
 include '../includes/header.php';
 
-if (!isset($_SESSION['usuario']) || !$_SESSION['es_admin']) {
+if (!isset($_SESSION['usuario_id']) || !$_SESSION['es_admin']) {
     header('Location: ' . BASE_URL . '/auth/login.php');
     exit;
 }
@@ -70,7 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <main class="container">
     <h2>Administrar Productos</h2>
-
+    <a href="<?= BASE_URL ?>/admin/indexAdmin.php" class="btn-3" style="margin-top:20px;">Volver a administracion</a>
+    <hr class="separator-line">
     <?php if ($mensaje_exito): ?><p class="mensaje exito"><?= $mensaje_exito ?></p><?php endif; ?>
     <?php if (!empty($errores_form)): ?>
         <div class="errores-formulario"><?php foreach ($errores_form as $e): ?><p class="error-mensaje"><?= $e ?></p><?php endforeach; ?></div>
@@ -127,7 +128,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     </div>
-     <div class="filtros-productos" style="display:flex; gap:20px; align-items:center; margin-bottom:20px; flex-wrap:wrap;">
   <div class="product-filters">
   <form method="GET" action="">
     <div class="filter-row">

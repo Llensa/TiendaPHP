@@ -3,7 +3,7 @@ require_once '../db/db.php';
 require_once '../helpers/Csrf.php';
 include '../includes/header.php';
 
-if (!isset($_SESSION['usuario'])) {
+if (!isset($_SESSION['usuario_id'])) {
     header('Location: ' . BASE_URL . '/auth/login.php?redirect=' . urlencode($_SERVER['REQUEST_URI']));
     exit;
 }

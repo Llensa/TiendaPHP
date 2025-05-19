@@ -2,13 +2,13 @@
 require_once 'db/db.php';
 include 'includes/header.php';
 
-if (!isset($_SESSION['usuario'])) {
+if (!isset($_SESSION['usuario_id'])) {
     header('Location: ' . BASE_URL . '/auth/login.php?redirect=' . urlencode(BASE_URL . '/pedidos.php'));
     exit;
 }
 
-$stmt = $pdo->prepare("SELECT id, creado_en, total, estado FROM pedidos WHERE usuario_id = ? ORDER BY creado_en DESC");
-$stmt->execute([$_SESSION['usuario']]);
+$stmt = $pdo->prepare("SELECT id, fecha_pedido, total, estado FROM pedidos WHERE usuario_id = ? ORDER BY fecha_pedido DESC");
+$stmt->execute([$_SESSION['usuario_id']]);
 $pedidos = $stmt->fetchAll();
 ?>
 
@@ -38,7 +38,7 @@ $pedidos = $stmt->fetchAll();
                     <div class="pedido-item">
                         <div class="order-header toggle-detalle" data-target="detalle-<?= $pedido['id'] ?>" role="button" tabindex="0">
                             <strong>Pedido #<?= $pedido['id'] ?></strong>
-                            <span class="fecha-pedido"><?= date('d/m/Y H:i', strtotime($pedido['creado_en'])) ?></span>
+                            <span class="fecha-pedido"><?= date('d/m/Y H:i', strtotime($pedido['fecha_pedido'])) ?></span>
                         </div>
                         <div style="display: flex; gap: 10px; margin: 10px 0;">
                             <?php foreach ($resumenRapido as $res): ?>

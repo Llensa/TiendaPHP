@@ -5,12 +5,12 @@ if (!defined('BASE_URL')) {
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-$current_page = basename($_SERVER['PHP_SELF']); // Definido al inicio
+$current_page = basename($_SERVER['PHP_SELF']);
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+ <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tienda de Auriculares</title>
@@ -42,9 +42,9 @@ $current_page = basename($_SERVER['PHP_SELF']); // Definido al inicio
     <nav class="navbar">
       <ul>
         <li><a href="<?= BASE_URL ?>/index.php">Inicio</a></li>
-        <?php if (isset($_SESSION['usuario'])): ?>
+        <?php if (isset($_SESSION['usuario_id'])): ?>
           <li><a href="<?= BASE_URL ?>/perfil.php">Perfil</a></li>
-          <?php if (isset($_SESSION['es_admin']) && $_SESSION['es_admin'] === true): ?>
+          <?php if (!empty($_SESSION['es_admin'])): ?>
             <li><a href="<?= BASE_URL ?>/admin/indexAdmin.php">Admin</a></li>
           <?php endif; ?>
           <li><a href="<?= BASE_URL ?>/auth/logout.php">Salir</a></li>

@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-if (!isset($_SESSION['usuario'])) {
+if (!isset($_SESSION['usuario_id'])) {
     $_SESSION['mensaje_error'] = "Debes iniciar sesión.";
     // Redirigir a login o a la página del producto si tenemos producto_id
     $producto_id_redirect = filter_input(INPUT_POST, 'producto_id', FILTER_VALIDATE_INT);

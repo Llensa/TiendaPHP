@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') { // Cambiado a POST por seguridad
     exit;
 }
 
-if (!isset($_SESSION['usuario'])) {
+if (!isset($_SESSION['usuario_id'])) {
     $_SESSION['mensaje_error'] = "Debes iniciar sesión.";
     $producto_id_redirect = filter_input(INPUT_POST, 'producto_id_redirect', FILTER_VALIDATE_INT);
     header('Location: ' . BASE_URL . ($producto_id_redirect ? '/producto.php?id='.$producto_id_redirect : '/index.php'));

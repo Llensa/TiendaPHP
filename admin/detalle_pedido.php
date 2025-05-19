@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 require_once '../db/db.php';
 include '../includes/header.php';
 
-if (!isset($_SESSION['usuario']) || !isset($_SESSION['es_admin']) || $_SESSION['es_admin'] !== true) {
+if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['es_admin']) || $_SESSION['es_admin'] !== true) {
     header('Location: ' . BASE_URL . '/auth/login.php');
     exit;
 }

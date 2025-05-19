@@ -1,47 +1,31 @@
 <?php
-require_once 'db/db.php'; // Asegúrate de que este archivo exista y configure $pdo
-require_once 'helpers/Csrf.php'; // Asegúrate de que esta clase exista y funcione
-include 'includes/header.php'; // Tu header HTML
+require_once 'db/db.php';
+require_once 'helpers/Csrf.php';
+include 'includes/header.php';
 
-// Iniciar sesión si no está iniciada (importante para $_SESSION)
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
+if (session_status() == PHP_SESSION_NONE) session_start();
+
+// Si el usuario no está logueado, redirigir al login
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: " . BASE_URL . "/auth/login.php?redirect=" . urlencode(BASE_URL . "/checkout.php"));
+    exit;
 }
 
-// Opcional: Redirigir si no hay usuario (a menos que permitas checkout como invitado)
-/*
-if (!isset($_SESSION['usuario'])) {
-    // Necesitarás BASE_URL definida o una ruta absoluta
-    // header("Location: /ruta_a_tu_login.php?redirect=checkout");
-    // exit;
-}
-*/
-
-// Variables iniciales
+$nombreCompleto = $_SESSION['nombre_usuario'] ?? '';
 $direcciones = [];
-$nombreCompleto = $_SESSION['nombre_usuario'] ?? ''; // Asume que guardas el nombre completo aquí
 
-// Obtener direcciones del usuario logueado
-if (isset($_SESSION['usuario'])) { // Asume que 'usuario' es el ID del usuario en la sesión
-    try {
-        $stmt = $pdo->prepare("
-            SELECT id, calle, numero, apartamento, ciudad, provincia, codigo_postal, pais
-            FROM direcciones
-            WHERE usuario_id = ?
-        ");
-        $stmt->execute([$_SESSION['usuario']]);
-        $direcciones = $stmt->fetchAll();
-    } catch (PDOException $e) {
-        error_log("Error al obtener direcciones: " . $e->getMessage());
-        // Considera mostrar un mensaje de error al usuario si esto falla
-        $direcciones = [];
-    }
+try {
+    $stmt = $pdo->prepare("SELECT id, calle, numero, apartamento, ciudad, provincia, codigo_postal, pais FROM direcciones WHERE usuario_id = ?");
+    $stmt->execute([$_SESSION['usuario_id']]);
+    $direcciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    error_log("Error al obtener direcciones: " . $e->getMessage());
 }
 
-// Definir BASE_URL si no está definido (como en tu código original)
+// BASE_URL fallback
 $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
 $host = $_SERVER['HTTP_HOST'];
-$path = rtrim(dirname($_SERVER['PHP_SELF']), '/\\'); // Cuidado si checkout.php está en un subdirectorio profundo
+$path = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
 $base = "$protocol://$host$path";
 if (!defined('BASE_URL')) define('BASE_URL', $base);
 ?>
@@ -58,8 +42,7 @@ if (!defined('BASE_URL')) define('BASE_URL', $base);
                 <div class="checkout-col-price">Precio Unit.</div>
                 <div class="checkout-col-subtotal">Subtotal</div>
             </div>
-            <div id="checkout-productos">
-                </div>
+            <div id="checkout-productos"></div>
             <div class="checkout-total">
                 <strong>Total:</strong>
                 <span id="total-checkout-carrito">$0.00</span>
@@ -68,15 +51,15 @@ if (!defined('BASE_URL')) define('BASE_URL', $base);
 
         <hr class="separator-line">
 
-        <div id="formulario-pago" class="form-autenticacion" style="margin-top: 20px; display: none;"> <h3>Información de Envío y Pago</h3>
+        <div id="formulario-pago" class="form-autenticacion" style="margin-top: 20px;">
+            <h3>Información de Envío y Pago</h3>
 
             <?php if (!empty($direcciones)): ?>
-            <div class="form-grupo">
-                <label for="direccionGuardada">Seleccionar dirección guardada:</label>
-                <select id="direccionGuardada" class="form-control">
-                    <option value="">-- Seleccioná una dirección --</option>
-                    <?php foreach ($direcciones as $dir): ?>
-                        <?php
+                <div class="form-grupo">
+                    <label for="direccionGuardada">Seleccionar dirección guardada:</label>
+                    <select id="direccionGuardada" class="form-control">
+                        <option value="">-- Seleccioná una dirección --</option>
+                        <?php foreach ($direcciones as $dir): 
                             $direccionTexto = $dir['calle'] . ' ' . $dir['numero'];
                             if (!empty($dir['apartamento'])) $direccionTexto .= ', ' . $dir['apartamento'];
                             $valueOption = implode('|', [
@@ -86,16 +69,18 @@ if (!defined('BASE_URL')) define('BASE_URL', $base);
                             ]);
                         ?>
                         <option value="<?= $valueOption ?>">
-                            <?= htmlspecialchars($direccionTexto, ENT_QUOTES, 'UTF-8') ?> - <?= htmlspecialchars($dir['ciudad'], ENT_QUOTES, 'UTF-8') ?> (CP: <?= htmlspecialchars($dir['codigo_postal'], ENT_QUOTES, 'UTF-8') ?>)
+                            <?= htmlspecialchars($direccionTexto) ?> - <?= htmlspecialchars($dir['ciudad']) ?> (CP: <?= htmlspecialchars($dir['codigo_postal']) ?>)
                         </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
             <?php endif; ?>
 
-            <form id="formCheckout" method="POST" action="#"> <?= Csrf::inputField() ?> <div class="form-grupo">
+            <form id="formCheckout" method="POST" action="#"> 
+                <?= Csrf::inputField() ?>
+                <div class="form-grupo">
                     <label for="nombreCompleto">Nombre Completo:</label>
-                    <input type="text" id="nombreCompleto" name="nombreCompleto" class="form-control" required value="<?= htmlspecialchars($nombreCompleto, ENT_QUOTES, 'UTF-8') ?>">
+                    <input type="text" id="nombreCompleto" name="nombreCompleto" class="form-control" required value="<?= htmlspecialchars($nombreCompleto) ?>">
                     <span class="error-js-mensaje"></span>
                 </div>
 
@@ -131,7 +116,6 @@ if (!defined('BASE_URL')) define('BASE_URL', $base);
                         <input type="text" id="mesExp" name="mesExp" maxlength="2" class="form-control" placeholder="MM" required>
                         <span class="error-js-mensaje"></span>
                     </div>
-
                     <div class="form-grupo" style="flex: 1;">
                         <label for="anioExp">Año (AAAA):</label>
                         <input type="text" id="anioExp" name="anioExp" maxlength="4" class="form-control" placeholder="AAAA" required>
@@ -141,7 +125,7 @@ if (!defined('BASE_URL')) define('BASE_URL', $base);
 
                 <div class="form-grupo" style="margin-top: 15px;">
                     <label for="cvc">CVC:</label>
-                    <input type="text" id="cvc" name="cvc" class="form-control" placeholder="XXX" required maxlength="3">
+                    <input type="text" id="cvc" name="cvc" class="form-control" placeholder="XXX" required maxlength="4">
                     <span class="error-js-mensaje"></span>
                 </div>
 
@@ -157,9 +141,9 @@ if (!defined('BASE_URL')) define('BASE_URL', $base);
     </div>
 </main>
 
-<?php include 'includes/footer.php'; // Tu footer HTML ?>
+<?php include 'includes/footer.php'; ?>
 
 <script>
-  const BASE_URL = "<?= htmlspecialchars(BASE_URL, ENT_QUOTES, 'UTF-8') ?>";
+  const BASE_URL = "<?= htmlspecialchars(BASE_URL) ?>";
 </script>
-<script src="<?= htmlspecialchars(BASE_URL, ENT_QUOTES, 'UTF-8') ?>/assets/js/checkout.js"></script>
+<script src="<?= BASE_URL ?>/assets/js/checkout.js"></script>

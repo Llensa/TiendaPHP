@@ -2,7 +2,7 @@
 require_once '../db/db.php';
 include '../includes/header.php';
 
-if (!isset($_SESSION['usuario']) || !$_SESSION['es_admin']) {
+if (!isset($_SESSION['usuario_id']) || !$_SESSION['es_admin']) {
     header('Location: ' . BASE_URL . '/auth/login.php');
     exit;
 }
@@ -19,6 +19,8 @@ $comentarios = $stmt->fetchAll();
 
 <main class="container">
     <h2 style="margin-bottom: 25px;">🗨️ Moderación de Comentarios</h2>
+     <a href="<?= BASE_URL ?>/admin/indexAdmin.php" class="btn-3" style="margin: top 10px;px;">Volver a administracion</a>
+     <hr class="separator-line">
 
     <?php if (empty($comentarios)): ?>
         <p class="mensaje error">No hay comentarios aún.</p>

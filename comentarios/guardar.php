@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-if (!isset($_SESSION['usuario'])) {
+if (!isset($_SESSION['usuario_id'])) {
     $_SESSION['mensaje_error'] = "Debes iniciar sesión para comentar.";
     $redirect_url = isset($_POST['producto_id']) ? BASE_URL . "/producto.php?id=" . intval($_POST['producto_id']) : BASE_URL . "/index.php";
     header("Location: " . BASE_URL . "/auth/login.php?redirect=" . urlencode($redirect_url));

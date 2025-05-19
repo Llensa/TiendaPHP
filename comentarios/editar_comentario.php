@@ -4,7 +4,7 @@ require_once '../db/db.php';
 
 include '../includes/header.php';
 
-if (!isset($_SESSION['usuario'])) {
+if (!isset($_SESSION['usuario_id'])) {
     header('Location: ' . BASE_URL . '/auth/login.php');
     exit;
 }

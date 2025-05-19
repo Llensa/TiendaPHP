@@ -1,6 +1,8 @@
 <?php
-// login.php
-session_start(); // Asegúrate de que esté aquí, antes de cualquier otro código o HTML.
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once '../db/db.php';
 require_once '../helpers/Csrf.php';
 include '../includes/header.php';
@@ -18,17 +20,17 @@ if (isset($_GET['redirect'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];
-    $email_form = $email; // Para repoblar el campo
+    $email_form = $email;
 
     if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errores[] = "Por favor, introduce un correo electrónico válido.";
     }
+
     if (empty($password)) {
         $errores[] = "Por favor, introduce tu contraseña.";
     }
 
     if (empty($errores)) {
-        // Incluir 'rol' y 'nombre' en la consulta
         $stmt = $pdo->prepare("SELECT id, nombre, password, rol, verificado FROM usuarios WHERE email = ?");
         $stmt->execute([$email]);
         $usuario = $stmt->fetch();
@@ -36,10 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($usuario) {
             if ($usuario['verificado'] == 1) {
                 if (password_verify($password, $usuario['password'])) {
-                    $_SESSION['usuario_id'] = $usuario['id']; // Cambiamos a usuario_id para consistencia
-                    $_SESSION['nombre_usuario'] = $usuario['nombre']; // Guardar nombre para saludos
-                    $_SESSION['es_admin'] = ($usuario['rol'] === 'admin'); // Establecer si es admin
-                    
+                    // ✅ Aquí seteamos la sesión correctamente luego de verificar todo
+                    $_SESSION['usuario_id'] = $usuario['id'];
+                    $_SESSION['nombre_usuario'] = $usuario['nombre'];
+                    $_SESSION['es_admin'] = ($usuario['rol'] === 'admin');
+
                     header('Location: ' . $redirect_url);
                     exit;
                 } else {
@@ -74,11 +77,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="email" id="emailLogin" name="email" placeholder="tu@correo.com" required class="form-control" value="<?= htmlspecialchars($email_form ?? '') ?>">
                 <span class="error-js-mensaje" id="error-emailLogin"></span>
             </div>
+
             <div class="form-grupo">
                 <label for="passwordLogin">Contraseña</label>
                 <input type="password" id="passwordLogin" name="password" placeholder="Tu contraseña" required class="form-control">
                 <span class="error-js-mensaje" id="error-passwordLogin"></span>
             </div>
+
             <button type="submit" class="btn-3">Entrar</button>
             <p>¿No tienes cuenta? <a href="<?= BASE_URL ?>/auth/register.php">Regístrate aquí</a></p>
         </form>

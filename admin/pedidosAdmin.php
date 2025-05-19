@@ -2,7 +2,7 @@
 require_once '../db/db.php';
 include '../includes/header.php';
 
-if (!isset($_SESSION['usuario']) || !isset($_SESSION['es_admin']) || $_SESSION['es_admin'] !== true) {
+if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['es_admin']) || $_SESSION['es_admin'] !== true) {
     header('Location: ' . BASE_URL . '/auth/login.php');
     exit;
 }
@@ -26,6 +26,8 @@ $pedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <main class="container">
     <h2>📦 Gestión de Pedidos</h2>
+ <a href="<?= BASE_URL ?>/admin/indexAdmin.php" class="btn-3" style="margin-top:20px;">Volver a administracion</a>
+<hr class="separator-line">
 
     <?php if (empty($pedidos)): ?>
         <p class="mensaje info">No hay pedidos registrados.</p>
